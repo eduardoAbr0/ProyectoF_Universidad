@@ -42,7 +42,7 @@
     <Component class="com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges" name="buttonBadges1">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/tecjerez/proyecto_clinica/interfaz/iconos/icon_cerrar.png"/>
+          <Image iconType="3" name="/com/tecjerez/proyecto_universidad/interfaz/iconos/icon_cerrar.png"/>
         </Property>
       </Properties>
       <Events>
@@ -58,7 +58,7 @@
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="Cl&#xed;nica Bienestar "/>
+        <Property name="text" type="java.lang.String" value="Universidad Beta"/>
       </Properties>
     </Component>
   </SubComponents>

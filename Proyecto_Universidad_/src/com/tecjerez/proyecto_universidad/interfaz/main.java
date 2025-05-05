@@ -7,15 +7,7 @@ package com.tecjerez.proyecto_universidad.interfaz;
 import com.tecjerez.proyecto_universidad.interfaz.event.EventMenu;
 import com.tecjerez.proyecto_universidad.interfaz.login;
 import com.tecjerez.proyecto_universidad.interfaz.form.Form;
-import com.tecjerez.proyecto_universidad.interfaz.form.Form_Citas;
-import com.tecjerez.proyecto_universidad.interfaz.form.Form_Diagnosticos;
-import com.tecjerez.proyecto_universidad.interfaz.form.Form_Empleados;
-import com.tecjerez.proyecto_universidad.interfaz.form.Form_Facturas;
-import com.tecjerez.proyecto_universidad.interfaz.form.Form_Operaciones;
-import com.tecjerez.proyecto_universidad.interfaz.form.Form_Pacientes;
-import com.tecjerez.proyecto_universidad.interfaz.form.Form_Pagos;
-import com.tecjerez.proyecto_universidad.interfaz.form.Form_Partos;
-import com.tecjerez.proyecto_universidad.interfaz.form.Form_Graficas;
+import com.tecjerez.proyecto_universidad.interfaz.form.Form_Donadores;
 import java.awt.*;
 import java.awt.Component;
 import javax.swing.JDialog;
@@ -35,23 +27,7 @@ public class main extends javax.swing.JFrame {
             @Override
             public void selected(int index) {
                 if (index == 0) {
-                    showForm(new Form_Empleados());
-                } else if (index == 1) {
-                    showForm(new Form_Pacientes());
-                }else if (index == 2) {
-                    showForm(new Form_Citas());
-                }else if (index == 3) {
-                    showForm(new Form_Partos());
-                }else if (index == 4) {
-                    showForm(new Form_Operaciones());
-                }else if (index == 5) {
-                    showForm(new Form_Diagnosticos());
-                }else if (index == 6) {
-                    showForm(new Form_Facturas());
-                }else if (index == 7) {
-                    showForm(new Form_Pagos());
-                }else if (index == 8) {
-                    showForm(new Form_Graficas());
+                    showForm(new Form_Donadores());
                 }else if (index == 9) {
                     lg = new login();
                     lg.setVisible(true);
@@ -63,7 +39,7 @@ public class main extends javax.swing.JFrame {
             }
         };
         menu1.initMenu(event);
-        showForm(new Form_Empleados());
+        showForm(new Form_Donadores());
     }
 
     private void showForm(Component com) {

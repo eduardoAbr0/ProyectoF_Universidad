@@ -35,21 +35,18 @@ public class Menu extends javax.swing.JPanel {
     
     public void initMenu(EventMenu event) {
         this.event = event;
-        /* 
-        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_clinica/interfaz/iconos/icon-registromedico.png")), "Empleados", 0);
-        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_clinica/interfaz/iconos/icon-registrousuario.png")), "Pacientes", 1);
-        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_clinica/interfaz/iconos/icon-cita.png")), "Citas", 2);
-        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_clinica/interfaz/iconos/icon-partos.png")), "Partos", 3);
-        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_clinica/interfaz/iconos/icon-operaciones.png")), "Operaciones", 4);
-        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_clinica/interfaz/iconos/icon-diagnosticos.png")), "Diagnosticos", 5);
-        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_clinica/interfaz/iconos/icon-facturas.png")), "Facturas", 6);
-        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_clinica/interfaz/iconos/icon-pago.png")), "Pagos", 7);
-        //addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_clinica/interfaz/iconos/icon-registrousuario.png")), "Reportes cobertura semanal", 6);
-        //addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_clinica/interfaz/iconos/icon-registrousuario.png")), "Reportes maestro diario", 1);
-        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_clinica/interfaz/iconos/icon-reportes.png")), "Graficas", 8);
+        
+        
+        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-donadores.png")), "Donadores", 0);
+        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-representante.png")), "Representantes", 1);
+        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-voluntario.png")), "Voluntarios", 2);
+        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-evento.png")), "Eventos", 3);
+        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-garantia.png")), "Garantias", 4);
+        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-pago.png")), "Pagos", 5);
+        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-reporte.png")), "Reportes", 6);
         addEmpty();
-        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_clinica/interfaz/iconos/icon-cerrarsesion.png")), "Cerrar sesión", 9);
-        */
+        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-cerrarsesion.png")), "Cerrar sesión", 7);
+        
     }
     
     private void addEmpty() {

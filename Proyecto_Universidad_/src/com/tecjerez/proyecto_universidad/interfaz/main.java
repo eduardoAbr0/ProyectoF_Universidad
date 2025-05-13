@@ -9,6 +9,7 @@ import com.tecjerez.proyecto_universidad.interfaz.login;
 import com.tecjerez.proyecto_universidad.interfaz.form.Form;
 import com.tecjerez.proyecto_universidad.interfaz.form.Form_Donadores;
 import com.tecjerez.proyecto_universidad.interfaz.form.Form_Representante;
+import com.tecjerez.proyecto_universidad.interfaz.form.Form_Voluntario;
 import java.awt.*;
 import java.awt.Component;
 import javax.swing.JDialog;
@@ -31,7 +32,10 @@ public class main extends javax.swing.JFrame {
                     showForm(new Form_Donadores());
                 }else if (index == 1){
                     showForm(new Form_Representante());
-                }else if (index == 9) {
+                }else if (index == 2){
+                    showForm(new Form_Voluntario());
+                }
+                else if (index == 9) {
                     lg = new login();
                     lg.setVisible(true);
                     

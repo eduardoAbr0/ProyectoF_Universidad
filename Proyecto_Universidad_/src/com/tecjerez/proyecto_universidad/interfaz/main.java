@@ -9,6 +9,7 @@ import com.tecjerez.proyecto_universidad.interfaz.login;
 import com.tecjerez.proyecto_universidad.interfaz.form.Form;
 import com.tecjerez.proyecto_universidad.interfaz.form.Form_Donadores;
 import com.tecjerez.proyecto_universidad.interfaz.form.Form_EventosClases;
+import com.tecjerez.proyecto_universidad.interfaz.form.Form_Garantia;
 import com.tecjerez.proyecto_universidad.interfaz.form.Form_PagoCirculo;
 import com.tecjerez.proyecto_universidad.interfaz.form.Form_Representante;
 import com.tecjerez.proyecto_universidad.interfaz.form.Form_Voluntario;
@@ -39,7 +40,7 @@ public class main extends javax.swing.JFrame {
                 }else if (index == 3){
                     showForm(new Form_EventosClases());
                 }else if (index == 4){
-                    
+                    showForm(new Form_Garantia());
                 }else if (index == 5){
                     showForm(new Form_PagoCirculo());
                 }

@@ -40,9 +40,9 @@ public class Menu extends javax.swing.JPanel {
         addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-donadores.png")), "Donadores", 0);
         addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-representante.png")), "Representantes", 1);
         addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-voluntario.png")), "Voluntarios", 2);
-        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-evento.png")), "Eventos", 3);
+        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-evento.png")), "Eventos/Clases", 3);
         addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-garantia.png")), "Garantias", 4);
-        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-pago.png")), "Pagos", 5);
+        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-pago.png")), "Pagos/Circulos", 5);
         addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-reporte.png")), "Reportes", 6);
         addEmpty();
         addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-cerrarsesion.png")), "Cerrar sesión", 7);

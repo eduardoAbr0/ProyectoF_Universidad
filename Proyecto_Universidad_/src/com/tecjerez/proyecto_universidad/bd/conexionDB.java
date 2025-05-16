@@ -10,18 +10,15 @@ public class conexionDB {
 
     private conexionDB() {
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String connectionUrl =
-                "jdbc:sqlserver://BSRK\\SQLEXPRESS:1433;"
-                        + "database=clinica;"
-                        + "user=sqlEjemplo;"
-                        + "password=root;"
-                        + "encrypt=false;"
-                        + "trustServerCertificate=false;"
-                        + "loginTimeout=30;";
-            //String URL = "jdbc:sqlserver://BSRK\\SQLEXPRESS:1433;databaseName=clinica";
-            conexion = DriverManager.getConnection(connectionUrl);
-            System.out.println("Conexion exitosa con BD");
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+
+            String connectionUrl = "jdbc:oracle:thin:@192.168.1.57:1521/freepdb1";
+
+            String user = "universidad";
+            String password = "universidad123";
+
+            conexion = DriverManager.getConnection(connectionUrl, user, password);
+            System.out.println("Conexión exitosa con Oracle VM");
         } catch (ClassNotFoundException e) {
             //throw new RuntimeException(e);
             System.out.println("Error en el DRIVER");

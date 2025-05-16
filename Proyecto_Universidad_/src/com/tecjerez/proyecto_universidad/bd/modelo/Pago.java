@@ -1,16 +1,15 @@
-
 package com.tecjerez.proyecto_universidad.bd.modelo;
 
 public class Pago {
     private int id;
-    private double monto;
     private String fecha;
-    private String metodo ;
+    private double monto;
+    private String metodo;
 
-    public Pago(int id, double monto, String fecha, String metodo) {
+    public Pago(int id, String fecha, double monto, String metodo) {
         this.id = id;
-        this.monto = monto;
         this.fecha = fecha;
+        this.monto = monto;
         this.metodo = metodo;
     }
 
@@ -22,20 +21,20 @@ public class Pago {
         this.id = id;
     }
 
-    public double getMonto() {
-        return monto;
-    }
-
-    public void setMonto(double monto) {
-        this.monto = monto;
-    }
-
     public String getFecha() {
         return fecha;
     }
 
     public void setFecha(String fecha) {
         this.fecha = fecha;
+    }
+
+    public double getMonto() {
+        return monto;
+    }
+
+    public void setMonto(double monto) {
+        this.monto = monto;
     }
 
     public String getMetodo() {
@@ -45,6 +44,6 @@ public class Pago {
     public void setMetodo(String metodo) {
         this.metodo = metodo;
     }
-    
-    
+     
 }
+

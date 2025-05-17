@@ -16,6 +16,15 @@ public class Representante {
         this.telefono = telefono;
         this.clase = clase;
     }
+    
+    public Representante( String nombre, String primer_apellido, String segundo_apellido, int telefono, int clase) {
+        this.nombre = nombre;
+        this.primer_apellido = primer_apellido;
+        this.segundo_apellido = segundo_apellido;
+        this.telefono = telefono;
+        this.clase = clase;
+    }
+
 
     
     public int getId() {

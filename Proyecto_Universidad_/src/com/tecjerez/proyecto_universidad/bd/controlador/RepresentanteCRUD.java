@@ -14,8 +14,11 @@ public class RepresentanteCRUD implements DAORepresentante {
 
     @Override
     public void insertar(Representante r) {
-        String sql = "INSERT INTO representante(nombre, primer_apellido, segundo_apellido, telefono, clase_id) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = conexionDB.getInstancia().getConexion().prepareStatement(sql)) {
+        String sql = "INSERT INTO representante(nombre, primer_apellido, segundo_apellido, telefono, clase) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement ps = null;
+        
+        try{
+            ps = conexionDB.getInstancia().getConexion().prepareStatement(sql);
             ps.setString(1, r.getNombre());
             ps.setString(2, r.getPrimer_apellido());
             ps.setString(3, r.getSegundo_apellido());
@@ -28,13 +31,22 @@ public class RepresentanteCRUD implements DAORepresentante {
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error al insertar representante", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } 
     }
 
     @Override
     public void actualizar(Representante r) {
-        String sql = "UPDATE representante SET nombre = ?, primer_apellido = ?, segundo_apellido = ?, telefono = ?, clase_id = ? WHERE id = ?";
-        try (PreparedStatement ps = conexionDB.getInstancia().getConexion().prepareStatement(sql)) {
+        String sql = "UPDATE representante SET nombre = ?, primer_apellido = ?, segundo_apellido = ?, telefono = ?, clase = ? WHERE id = ?";
+        PreparedStatement ps = null;
+        
+        try {
+            ps = conexionDB.getInstancia().getConexion().prepareStatement(sql);
             ps.setString(1, r.getNombre());
             ps.setString(2, r.getPrimer_apellido());
             ps.setString(3, r.getSegundo_apellido());
@@ -44,17 +56,28 @@ public class RepresentanteCRUD implements DAORepresentante {
 
             if (ps.executeUpdate() >= 1) {
                 JOptionPane.showMessageDialog(null, "Representante actualizado correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            }else {
+                JOptionPane.showMessageDialog(null, "No se encontró el representante.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error al actualizar representante", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        }finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } 
     }
 
     @Override
     public void eliminar(Integer id) {
         String sql = "DELETE FROM representante WHERE id = ?";
-        try (PreparedStatement ps = conexionDB.getInstancia().getConexion().prepareStatement(sql)) {
+        PreparedStatement ps = null;
+        
+        try {
+            ps = conexionDB.getInstancia().getConexion().prepareStatement(sql);
             ps.setInt(1, id);
 
             if (ps.executeUpdate() >= 1) {
@@ -63,7 +86,13 @@ public class RepresentanteCRUD implements DAORepresentante {
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error al eliminar representante", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        }finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } 
     }
 
     public Representante convertir(ResultSet rs, int id) throws SQLException {
@@ -71,38 +100,71 @@ public class RepresentanteCRUD implements DAORepresentante {
         String primerApellido = rs.getString("primer_apellido");
         String segundoApellido = rs.getString("segundo_apellido");
         int telefono = rs.getInt("telefono");
-        int clase = rs.getInt("clase_id");
+        int clase = rs.getInt("clase");
 
         return new Representante(id, nombre, primerApellido, segundoApellido, telefono, clase);
     }
 
     @Override
-    public Representante buscar(Integer id) throws SQLException {
+    public Representante buscar(Integer id) {
         String sql = "SELECT * FROM representante WHERE id = ?";
-        try (PreparedStatement ps = conexionDB.getInstancia().getConexion().prepareStatement(sql)) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Representante representante = null;
+
+        try {
+            ps = conexionDB.getInstancia().getConexion().prepareStatement(sql);
             ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             if (rs.next()) {
-                return convertir(rs, id);
+                representante = convertir(rs, id);
             } else {
-                JOptionPane.showMessageDialog(null, "No se encontró el representante", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return null;
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(null, "No se encontró el representante", "Error", JOptionPane.WARNING_MESSAGE);
+                });
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error SQL", "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
+
+        return representante;
     }
 
     @Override
-    public List<Representante> buscarTodos() throws SQLException {
+    public List<Representante> buscarTodos() {
         String sql = "SELECT * FROM representante";
-        List<Representante> lista = new ArrayList<>();
-        try (PreparedStatement ps = conexionDB.getInstancia().getConexion().prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Representante> representantes = new ArrayList<>();
+
+        try {
+            ps = conexionDB.getInstancia().getConexion().prepareStatement(sql);
+            rs = ps.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("id");
-                lista.add(convertir(rs, id));
+                representantes.add(convertir(rs, id));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error SQL", "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
-        return lista;
+
+        return representantes;
     }
 }
 

@@ -4,8 +4,17 @@
  */
 package com.tecjerez.proyecto_universidad.interfaz.form;
 
+import com.tecjerez.proyecto_universidad.bd.conexionDB;
+import com.tecjerez.proyecto_universidad.bd.hilos;
+import com.tecjerez.proyecto_universidad.bd.modelo.Representante;
 import java.awt.Component;
 import java.awt.Container;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -14,11 +23,9 @@ import javax.swing.table.DefaultTableModel;
  * @author ed308
  */
 public class Form_Representante extends javax.swing.JPanel {
-
-    /**
-     * Creates new form Form_Representante
-     */
-    
+    hilos h;
+    Representante representante;
+    ArrayList<Representante> representantes;
     DefaultTableModel tableModel = new DefaultTableModel();
     
     public Form_Representante() {
@@ -29,7 +36,6 @@ public class Form_Representante extends javax.swing.JPanel {
         tableModel.addColumn("Nombre");
         tableModel.addColumn("Primer apellido");
         tableModel.addColumn("Segundo apellido");
-        tableModel.addColumn("Tercer apellido");
         tableModel.addColumn("Telefono");
         tableModel.addColumn("Clase");
         
@@ -61,7 +67,6 @@ public class Form_Representante extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         btnEliminar = new com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges();
         btnAgregar = new com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges();
@@ -73,10 +78,9 @@ public class Form_Representante extends javax.swing.JPanel {
         txt3 = new javax.swing.JTextField();
         txt4 = new javax.swing.JTextField();
         txt5 = new javax.swing.JTextField();
-        txt10 = new javax.swing.JTextField();
         txt1 = new javax.swing.JSpinner();
         jLabel11 = new javax.swing.JLabel();
-        txt12 = new javax.swing.JComboBox<>();
+        txt6 = new javax.swing.JSpinner();
         roundPanel3 = new com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
@@ -98,10 +102,6 @@ public class Form_Representante extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
         jLabel4.setText("Segundo apellido");
         jLabel4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
-        jLabel5.setText("Tercer apellido");
-        jLabel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
         jLabel9.setText("Número de telefono");
@@ -159,6 +159,11 @@ public class Form_Representante extends javax.swing.JPanel {
         });
 
         txt2.setToolTipText("");
+        txt2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt2KeyReleased(evt);
+            }
+        });
 
         txt3.setToolTipText("");
         txt3.addActionListener(new java.awt.event.ActionListener() {
@@ -175,23 +180,10 @@ public class Form_Representante extends javax.swing.JPanel {
         });
 
         txt5.setToolTipText("");
-        txt5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt5ActionPerformed(evt);
-            }
-        });
-
-        txt10.setToolTipText("");
 
         jLabel11.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
         jLabel11.setText("Clase");
         jLabel11.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
-
-        txt12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt12ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout roundPanel1Layout = new javax.swing.GroupLayout(roundPanel1);
         roundPanel1.setLayout(roundPanel1Layout);
@@ -217,7 +209,6 @@ public class Form_Representante extends javax.swing.JPanel {
                     .addGroup(roundPanel1Layout.createSequentialGroup()
                         .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -228,13 +219,10 @@ public class Form_Representante extends javax.swing.JPanel {
                             .addComponent(txt3)
                             .addComponent(txt2)
                             .addComponent(txt1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(roundPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txt10)
-                                    .addComponent(txt4)
-                                    .addComponent(txt5)
-                                    .addComponent(txt12, 0, 161, Short.MAX_VALUE))))))
+                            .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txt5)
+                                .addComponent(txt4)
+                                .addComponent(txt6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         roundPanel1Layout.setVerticalGroup(
@@ -259,16 +247,12 @@ public class Form_Representante extends javax.swing.JPanel {
                     .addComponent(txt4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
+                    .addComponent(jLabel9)
                     .addComponent(txt5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(txt10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(txt12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -289,6 +273,11 @@ public class Form_Representante extends javax.swing.JPanel {
         tabla.setRowHeight(25);
         tabla.setSelectionBackground(new java.awt.Color(232, 57, 95));
         tabla.getTableHeader().setReorderingAllowed(false);
+        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabla);
 
         javax.swing.GroupLayout roundPanel3Layout = new javax.swing.GroupLayout(roundPanel3);
@@ -326,7 +315,13 @@ public class Form_Representante extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-
+        if (Integer.parseInt(txt1.getValue().toString()) <= 0) {
+            JOptionPane.showMessageDialog(null, "No hay representante por eliminar", "", JOptionPane.WARNING_MESSAGE);
+        } else {
+            h = new hilos("eliminarRepresentante");
+            h.setId(Integer.parseInt(txt1.getValue().toString()));
+            h.start();
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregarMouseClicked
@@ -334,15 +329,75 @@ public class Form_Representante extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAgregarMouseClicked
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        if (txt2.getText().isEmpty() || txt3.getText().isEmpty() || txt4.getText().isEmpty() || txt5.getText().isEmpty() ) {
+            JOptionPane.showMessageDialog(null, "Componente(s) vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else {
+            try {
+                representante = new Representante(
+                        txt2.getText(),
+                        txt3.getText(),
+                        txt4.getText(),
+                        Integer.parseInt(txt5.getText()),
+                        Integer.parseInt(txt6.getValue().toString())
+                );
+                
 
+                h = new hilos("insertarRepresentante");
+                h.setObjeto(representante);
+                h.start();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Ingrese datos correctos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        if (txt2.getText().isEmpty() || txt3.getText().isEmpty() || txt4.getText().isEmpty() || txt5.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Componente(s) vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else if (Integer.parseInt(txt1.getValue().toString()) > 0) {
+            try {
+                representante = new Representante(
+                        Integer.parseInt(txt1.getValue().toString()),
+                        txt2.getText(),
+                        txt3.getText(),
+                        txt4.getText(),
+                        Integer.parseInt(txt5.getText()),
+                        Integer.parseInt(txt6.getValue().toString())
+                );               
 
+                h = new hilos("cambiarRepresentante");
+                h.setObjeto(representante);
+                h.start();
+            } catch (NumberFormatException | NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "Ingrese datos correctos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay registro por cambiar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        tableModel.setRowCount(0);
 
+        if (Integer.parseInt(txt1.getValue().toString()) > 0) {
+
+            h = new hilos("consultarRepresentante");
+            h.setId(Integer.parseInt(txt1.getValue().toString()));
+            h.start();
+            try {
+                h.join();
+                representante = (Representante) h.getObjeto();
+            } catch (InterruptedException b) {
+                b.printStackTrace();
+            }
+
+            if (representante != null) {
+                tableModel.addRow(new Object[]{representante.getId(),representante.getNombre(),representante.getPrimer_apellido(),representante.getSegundo_apellido(),representante.getTelefono(),representante.getClase()});
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay representante", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -352,7 +407,24 @@ public class Form_Representante extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        tableModel.setRowCount(0);
 
+        h = new hilos("consultarTRepresentante");
+        h.start();
+        try {
+            h.join();
+            representantes = (ArrayList<Representante>) h.getObjeto();
+        } catch (InterruptedException b) {
+            b.printStackTrace();
+        }
+        if(!representantes.isEmpty()){
+            for (Representante a : representantes) {
+            tableModel.addRow(new Object[]{a.getId(),a.getNombre(),a.getPrimer_apellido(),a.getSegundo_apellido(),a.getTelefono(), a.getClase()});
+        }
+        }else{
+            JOptionPane.showMessageDialog(null, "No hay representantes registrados", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txt3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt3ActionPerformed
@@ -363,14 +435,68 @@ public class Form_Representante extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt4ActionPerformed
 
-    private void txt5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt5ActionPerformed
+    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
+        int i = tabla.getSelectedRow();
+        
+        //id
+        txt1.setValue(tableModel.getValueAt(i, 0));
+        //Nombre
+        txt2.setText(tableModel.getValueAt(i, 1).toString());
+        //Papellido
+        txt3.setText(tableModel.getValueAt(i, 2).toString());
+        //Sapellido
+        txt4.setText(tableModel.getValueAt(i, 3).toString());
+        //Num telefono
+        txt5.setText(tableModel.getValueAt(i, 4).toString());
+        //Clase
+        txt6.setValue(tableModel.getValueAt(i, 5));
+        
+        
+    }//GEN-LAST:event_tablaMouseClicked
 
-    private void txt12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt12ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt12ActionPerformed
+    private void txt2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt2KeyReleased
+        busquedas(tabla, "Nombre", txt2.getText());
+    }//GEN-LAST:event_txt2KeyReleased
+    
+    public void busquedas(JTable tabla, String campo, String filtro) {
+        ArrayList<Representante> rp = new ArrayList<>();
+        tableModel.setRowCount(0);
 
+        try {
+            String CONSULTA = "SELECT * FROM representante WHERE " + campo + " LIKE '" + filtro + "%' ORDER BY nombre";
+            System.out.println(CONSULTA);
+
+            ResultSet resultSet = null;
+            PreparedStatement preparedStatement = null;
+
+            try {
+                preparedStatement = conexionDB.getInstancia().getConexion().prepareStatement(CONSULTA);
+                resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    Representante representante = null;
+                    int id = resultSet.getInt(1);
+                    String nombre = resultSet.getString("Nombre");
+                    String pApellido = resultSet.getString("Primer_Apellido");
+                    String sApellido = resultSet.getString("Segundo_Apellido");
+                    int telefono = resultSet.getInt("Telefono");
+                    int clase = resultSet.getInt("Clase");
+                    
+                    representante = new Representante(id, nombre, pApellido, sApellido, telefono, clase);
+                    rp.add(representante);
+                }
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex);
+            }
+
+            for (Representante a : rp) {
+                tableModel.addRow(new Object[]{a.getId(),a.getNombre(),a.getPrimer_apellido(),a.getSegundo_apellido(),a.getTelefono(), a.getClase()});
+            }
+        }//try
+        catch (Exception sqle) {
+            JOptionPane.showMessageDialog(null, sqle);
+        }   
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges btnActualizar;
@@ -384,18 +510,16 @@ public class Form_Representante extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel roundPanel1;
     private com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel roundPanel3;
     private javax.swing.JTable tabla;
     private javax.swing.JSpinner txt1;
-    private javax.swing.JTextField txt10;
-    private javax.swing.JComboBox<String> txt12;
     private javax.swing.JTextField txt2;
     private javax.swing.JTextField txt3;
     private javax.swing.JTextField txt4;
     private javax.swing.JTextField txt5;
+    private javax.swing.JSpinner txt6;
     // End of variables declaration//GEN-END:variables
 }

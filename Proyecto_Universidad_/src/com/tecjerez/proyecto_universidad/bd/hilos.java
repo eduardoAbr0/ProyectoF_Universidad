@@ -2,9 +2,11 @@ package com.tecjerez.proyecto_universidad.bd;
 
 import com.tecjerez.proyecto_universidad.bd.controlador.CRUDDonador;
 import com.tecjerez.proyecto_universidad.bd.controlador.PagoCRUD;
+import com.tecjerez.proyecto_universidad.bd.controlador.RepresentanteCRUD;
 import com.tecjerez.proyecto_universidad.bd.controlador.VoluntarioCRUD;
 import com.tecjerez.proyecto_universidad.bd.modelo.Donador;
 import com.tecjerez.proyecto_universidad.bd.modelo.Pago;
+import com.tecjerez.proyecto_universidad.bd.modelo.Representante;
 import com.tecjerez.proyecto_universidad.bd.modelo.Voluntario;
 
 public class hilos extends Thread {
@@ -14,6 +16,7 @@ public class hilos extends Thread {
     int id;
     CRUDDonador donador = new CRUDDonador();
     VoluntarioCRUD voluntario = new VoluntarioCRUD();
+    RepresentanteCRUD representante = new RepresentanteCRUD();
 
     public hilos(String operacion) {
         this.operacio = operacion;
@@ -23,36 +26,21 @@ public class hilos extends Thread {
     @Override
     public void run() {
         switch (operacio) {
-            case "insertarDonador":
-                donador.insertar((Donador) objeto);
-                break;
-            case "consultarDonador":
-                objeto = donador.buscar(id);
-                break;
-            case "eliminarDonador":
-                donador.eliminar(id);
-                break;
-            case "cambiarDonador":
-                donador.actualizar((Donador) objeto);
-                break;
-            case "consultarTDonador":
-                objeto = donador.buscarTodos();
-                break;
-            case "insertarVoluntario":
-                voluntario.insertar((Voluntario) objeto);
-                break;
-            case "eliminarVoluntario":
-                voluntario.eliminar(id);
-                break;
-            case "cambiarVoluntario":
-                voluntario.actualizar((Voluntario) objeto);
-                break;
-            case "consultarVoluntario":
-                objeto = voluntario.buscar(id);
-                break;
-            case "consultarTVoluntario":
-                objeto = voluntario.buscarTodos();
-                break;
+            case "insertarDonador" -> donador.insertar((Donador) objeto);
+            case "consultarDonador" -> objeto = donador.buscar(id);
+            case "eliminarDonador" -> donador.eliminar(id);
+            case "cambiarDonador" -> donador.actualizar((Donador) objeto);
+            case "consultarTDonador" -> objeto = donador.buscarTodos();
+            case "insertarVoluntario" -> voluntario.insertar((Voluntario) objeto);
+            case "eliminarVoluntario" -> voluntario.eliminar(id);
+            case "cambiarVoluntario" -> voluntario.actualizar((Voluntario) objeto);
+            case "consultarVoluntario" -> objeto = voluntario.buscar(id);
+            case "consultarTVoluntario" -> objeto = voluntario.buscarTodos();
+            case "insertarRepresentante" -> representante.insertar((Representante) objeto);
+            case "eliminarRepresentante" -> representante.eliminar(id);
+            case "cambiarRepresentante" -> representante.actualizar((Representante) objeto);
+            case "consultarRepresentante" -> objeto = representante.buscar(id);
+            case "consultarTRepresentante" -> objeto = representante.buscarTodos();
         }
     }
 

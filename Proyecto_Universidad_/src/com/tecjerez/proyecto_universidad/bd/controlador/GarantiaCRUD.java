@@ -15,108 +15,196 @@ public class GarantiaCRUD implements DAOGarantia {
 
     @Override
     public void insertar(Garantia g) {
-        String sql = "INSERT INTO garantia (fecha, cantidad, estado, donador_id, circulo_id, pago_id) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = conexionDB.getInstancia().getConexion().prepareStatement(sql)) {
-            ps.setString(1, g.getFecha());
-            ps.setDouble(2, g.getCantidad());
-            ps.setString(3, g.getEstado());
-            ps.setInt(4, g.getDonador());
-            ps.setInt(5, g.getCirculo());
-            ps.setInt(6, g.getPago());
+        String sql = "INSERT INTO garantia (cantidad, estado, donador, circulo) VALUES (?, ?, ?, ?)";
+        String sqlCir = "SELECT obtener_circulo_id(?) FROM DUAL";
+        
+        PreparedStatement ps = null;
 
-            if (ps.executeUpdate() >= 1) {
-                JOptionPane.showMessageDialog(null, "Garantía insertada correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
-            }
+        try {
+            ps = conexionDB.getInstancia().getConexion().prepareStatement(sqlCir);
+            ps.setDouble(1, g.getCantidad());
+            ResultSet rs = ps.executeQuery();
+            
+            rs.next();
+            int cir = rs.getInt(1);
+            if (cir != 0) {
+                cir = rs.getInt(1);
+                rs.close();
+                ps.close();
+                
+                ps = conexionDB.getInstancia().getConexion().prepareStatement(sql);
+                ps.setDouble(1, g.getCantidad());
+                ps.setString(2, g.getEstado());
+                ps.setInt(3, g.getDonador());
+                ps.setInt(4, cir);
+                
+                if (ps.executeUpdate() >= 1) {
+                JOptionPane.showMessageDialog(null, "Garantia agregada correctamente.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Error al insertar la garantia", "Error", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "No hay circulo para asignar.", "Error", JOptionPane.INFORMATION_MESSAGE);
+            } 
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error al insertar garantía", "Error", JOptionPane.ERROR_MESSAGE);
+        }finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public void actualizar(Garantia g) {
-        String sql = "UPDATE garantia SET fecha = ?, cantidad = ?, estado = ?, donador_id = ?, circulo_id = ?, pago_id = ? WHERE id = ?";
-        try (PreparedStatement ps = conexionDB.getInstancia().getConexion().prepareStatement(sql)) {
-            ps.setString(1, g.getFecha());
-            ps.setDouble(2, g.getCantidad());
-            ps.setString(3, g.getEstado());
-            ps.setInt(4, g.getDonador());
-            ps.setInt(5, g.getCirculo());
-            ps.setInt(6, g.getPago());
-            ps.setInt(7, g.getId());
-
-            if (ps.executeUpdate() >= 1) {
-                JOptionPane.showMessageDialog(null, "Garantía actualizada correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "Garantía no encontrada", "Mensaje", JOptionPane.WARNING_MESSAGE);
-            }
+        String sql = "UPDATE garantia SET Cantidad = ?, Estado = ?, Donador = ?, Circulo = ? WHERE id = ?";
+        String sqlCir = "SELECT obtener_circulo_id(?) FROM DUAL";
+        
+        PreparedStatement ps = null;
+        
+        try {
+            ps = conexionDB.getInstancia().getConexion().prepareStatement(sqlCir);
+            ps.setDouble(1, g.getCantidad());
+            ResultSet rs = ps.executeQuery();
+            
+            rs.next();
+            int cir = rs.getInt(1);
+            
+            if (cir != 0) {
+                cir = rs.getInt(1);
+                rs.close();
+                ps.close();
+                
+                ps = conexionDB.getInstancia().getConexion().prepareStatement(sql);
+                ps.setDouble(1, g.getCantidad());
+                ps.setString(2, g.getEstado());
+                ps.setInt(3, g.getDonador());
+                ps.setInt(4, cir);
+                ps.setInt(5, g.getId());
+                
+                System.out.println("CIR " + cir);
+                
+                if (ps.executeUpdate() >= 1) {
+                JOptionPane.showMessageDialog(null, "Garantia actualizada correctamente.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Error al actualizar la garantia", "Error", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "No hay circulo para actualizar.", "Error", JOptionPane.INFORMATION_MESSAGE);
+            } 
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error al actualizar garantía", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+            JOptionPane.showMessageDialog(null, "Error al actualizar garantia.", "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }     
+        
     }
 
     @Override
     public void eliminar(Integer id) {
         String sql = "DELETE FROM garantia WHERE id = ?";
-        try (PreparedStatement ps = conexionDB.getInstancia().getConexion().prepareStatement(sql)) {
+        PreparedStatement ps = null;
+
+        try {
+            ps = conexionDB.getInstancia().getConexion().prepareStatement(sql);
             ps.setInt(1, id);
 
             if (ps.executeUpdate() >= 1) {
-                JOptionPane.showMessageDialog(null, "Garantía eliminada correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontró la garantía", "Mensaje", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Voluntario eliminado con éxito", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error al eliminar garantía", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al eliminar voluntario", "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private Garantia convertir(ResultSet rs, int id) throws SQLException {
+    private Garantia convertir(ResultSet rs, int id) throws SQLException{
         Garantia g = new Garantia(
             id,
             rs.getString("fecha"),
             rs.getDouble("cantidad"),
-            rs.getString("estado")
+            rs.getString("estado"),
+            rs.getInt("donador"),
+            rs.getInt("circulo")
         );
-        g.setDonador(rs.getInt("donador_id"));
-        g.setCirculo(rs.getInt("circulo_id"));
-        g.setPago(rs.getInt("pago_id"));
+        
         return g;
     }
 
     @Override
-    public Garantia buscar(Integer id) throws SQLException {
+    public Garantia buscar(Integer id) {
         String sql = "SELECT * FROM garantia WHERE id = ?";
-        try (PreparedStatement ps = conexionDB.getInstancia().getConexion().prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return convertir(rs, id);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Garantía no encontrada", "Mensaje", JOptionPane.WARNING_MESSAGE);
-                    return null;
-                }
-            }
-        }
-    }
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Garantia garantia = null;
 
-    @Override
-    public List<Garantia> buscarTodos() throws SQLException {
-        String sql = "SELECT * FROM garantia";
-        List<Garantia> lista = new ArrayList<>();
-        try (PreparedStatement ps = conexionDB.getInstancia().getConexion().prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                lista.add(convertir(rs, id));
+        try {
+            ps = conexionDB.getInstancia().getConexion().prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                garantia = convertir(rs, id);
+            } else {
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(null, "No se encontró la garantia", "Error", JOptionPane.WARNING_MESSAGE);
+                });
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error al buscar todas las garantías", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error SQL", "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        return lista;
+
+        return garantia;
+    }
+
+    @Override
+    public List<Garantia> buscarTodos() {
+        String sql = "SELECT * FROM garantia";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Garantia> garantias = new ArrayList<>();
+
+        try {
+            ps = conexionDB.getInstancia().getConexion().prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                garantias.add(convertir(rs, id));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error SQL", "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return garantias;
     }
 }
 

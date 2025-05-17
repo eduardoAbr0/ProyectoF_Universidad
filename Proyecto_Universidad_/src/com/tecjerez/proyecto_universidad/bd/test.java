@@ -20,8 +20,8 @@ public class test {
             
             String sql = "INSERT INTO circulo(nombre, valor) VALUES (?, ?)";
             PreparedStatement stmt = conexion.prepareStatement(sql);
-            stmt.setString(1, "Círculo Diamante");
-            stmt.setDouble(2, 75000.00);
+            stmt.setString(1, "Círculo Oro");
+            stmt.setDouble(2, 55000.00);
             if(stmt.executeUpdate()==1){
                 System.out.println("Ejecucion sql");
             }

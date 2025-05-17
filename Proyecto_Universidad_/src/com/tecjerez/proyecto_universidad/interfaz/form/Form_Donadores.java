@@ -456,8 +456,8 @@ public class Form_Donadores extends javax.swing.JPanel {
                         txt8.getText()
                 );
                 
-                donador.setRepresentante(Integer.parseInt(txt15.getValue().toString()));
-                donador.setVoluntario(Integer.parseInt(txt16.getValue().toString()));
+                donador.setRepresentante(Integer.parseInt(txt16.getValue().toString()));
+                donador.setClase(Integer.parseInt(txt15.getValue().toString()));
                 donador.setVoluntario(Integer.parseInt(txt17.getValue().toString()));
 
                 h = new hilos("insertarDonador");

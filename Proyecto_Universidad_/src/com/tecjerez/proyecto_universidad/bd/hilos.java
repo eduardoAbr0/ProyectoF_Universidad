@@ -1,10 +1,12 @@
 package com.tecjerez.proyecto_universidad.bd;
 
 import com.tecjerez.proyecto_universidad.bd.controlador.CRUDDonador;
+import com.tecjerez.proyecto_universidad.bd.controlador.GarantiaCRUD;
 import com.tecjerez.proyecto_universidad.bd.controlador.PagoCRUD;
 import com.tecjerez.proyecto_universidad.bd.controlador.RepresentanteCRUD;
 import com.tecjerez.proyecto_universidad.bd.controlador.VoluntarioCRUD;
 import com.tecjerez.proyecto_universidad.bd.modelo.Donador;
+import com.tecjerez.proyecto_universidad.bd.modelo.Garantia;
 import com.tecjerez.proyecto_universidad.bd.modelo.Pago;
 import com.tecjerez.proyecto_universidad.bd.modelo.Representante;
 import com.tecjerez.proyecto_universidad.bd.modelo.Voluntario;
@@ -17,6 +19,7 @@ public class hilos extends Thread {
     CRUDDonador donador = new CRUDDonador();
     VoluntarioCRUD voluntario = new VoluntarioCRUD();
     RepresentanteCRUD representante = new RepresentanteCRUD();
+    GarantiaCRUD garantia = new GarantiaCRUD();
 
     public hilos(String operacion) {
         this.operacio = operacion;
@@ -25,6 +28,7 @@ public class hilos extends Thread {
 
     @Override
     public void run() {
+        
         switch (operacio) {
             case "insertarDonador" -> donador.insertar((Donador) objeto);
             case "consultarDonador" -> objeto = donador.buscar(id);
@@ -41,6 +45,11 @@ public class hilos extends Thread {
             case "cambiarRepresentante" -> representante.actualizar((Representante) objeto);
             case "consultarRepresentante" -> objeto = representante.buscar(id);
             case "consultarTRepresentante" -> objeto = representante.buscarTodos();
+            case "insertarGarantia" -> garantia.insertar((Garantia) objeto);
+            case "eliminarGarantia" -> garantia.eliminar(id);
+            case "cambiarGarantia" -> garantia.actualizar((Garantia) objeto);
+            case "consultarGarantia" -> objeto = garantia.buscar(id);
+            case "consultarTGarantia" -> objeto = garantia.buscarTodos();
         }
     }
 

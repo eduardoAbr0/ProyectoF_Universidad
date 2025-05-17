@@ -30,7 +30,7 @@ public class CRUDDonador implements DAODonador {
             ps.setInt(10, d.getRepresentante());
             ps.setInt(11, d.getVoluntario());
             ps.setInt(12, d.getClase());
-
+            
             if (ps.executeUpdate() >= 1) {
                 JOptionPane.showMessageDialog(null, "Donador agregado correctamente.");
             }

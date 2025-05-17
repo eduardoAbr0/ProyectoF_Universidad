@@ -4,21 +4,21 @@
  */
 package com.tecjerez.proyecto_universidad.interfaz.form;
 
+import com.tecjerez.proyecto_universidad.bd.hilos;
+import com.tecjerez.proyecto_universidad.bd.modelo.Garantia;
 import java.awt.Component;
 import java.awt.Container;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author ed308
- */
 
 public class Form_Garantia extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Form_Garantia
-     */
+    Garantia garantia;
+    ArrayList<Garantia> garantias;
+    hilos h;
     DefaultTableModel tableModel = new DefaultTableModel();
     
     public Form_Garantia() {
@@ -57,23 +57,19 @@ public class Form_Garantia extends javax.swing.JPanel {
 
         roundPanel1 = new com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         btnEliminar = new com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges();
         btnAgregar = new com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges();
         btnActualizar = new com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges();
         btnBuscar = new com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        txt2 = new javax.swing.JTextField();
-        txt3 = new javax.swing.JTextField();
-        txt4 = new javax.swing.JTextField();
-        txt5 = new javax.swing.JTextField();
-        txt10 = new javax.swing.JTextField();
         txt1 = new javax.swing.JSpinner();
+        txt4 = new javax.swing.JSpinner();
+        txt2 = new javax.swing.JSpinner();
+        txt3 = new javax.swing.JComboBox<>();
         roundPanel8 = new com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
@@ -83,10 +79,6 @@ public class Form_Garantia extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("ID");
         jLabel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
-        jLabel2.setText("Fecha");
-        jLabel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
         jLabel3.setText("Cantidad");
@@ -99,10 +91,6 @@ public class Form_Garantia extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
         jLabel5.setText("Donador");
         jLabel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
-
-        jLabel9.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
-        jLabel9.setText("Circulo");
-        jLabel9.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-borrar.png"))); // NOI18N
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -155,30 +143,12 @@ public class Form_Garantia extends javax.swing.JPanel {
             }
         });
 
-        txt2.setToolTipText("");
-
-        txt3.setToolTipText("");
+        txt3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendiente", "Pagado" }));
         txt3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt3ActionPerformed(evt);
             }
         });
-
-        txt4.setToolTipText("");
-        txt4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt4ActionPerformed(evt);
-            }
-        });
-
-        txt5.setToolTipText("");
-        txt5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt5ActionPerformed(evt);
-            }
-        });
-
-        txt10.setToolTipText("");
 
         javax.swing.GroupLayout roundPanel1Layout = new javax.swing.GroupLayout(roundPanel1);
         roundPanel1.setLayout(roundPanel1Layout);
@@ -203,51 +173,37 @@ public class Form_Garantia extends javax.swing.JPanel {
                             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(roundPanel1Layout.createSequentialGroup()
                         .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txt3)
-                            .addComponent(txt2)
                             .addComponent(txt1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txt10)
-                                .addComponent(txt4, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                                .addComponent(txt5)))))
+                            .addComponent(txt4, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt3, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txt2, javax.swing.GroupLayout.Alignment.LEADING))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         roundPanel1Layout.setVerticalGroup(
             roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, roundPanel1Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(roundPanel1Layout.createSequentialGroup()
-                        .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(txt1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(txt2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txt3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4))
-                    .addComponent(txt4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txt1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txt2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txt3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(txt5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(txt10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -268,6 +224,11 @@ public class Form_Garantia extends javax.swing.JPanel {
         tabla.setRowHeight(25);
         tabla.setSelectionBackground(new java.awt.Color(232, 57, 95));
         tabla.getTableHeader().setReorderingAllowed(false);
+        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClicked(evt);
+            }
+        });
         jScrollPane5.setViewportView(tabla);
 
         javax.swing.GroupLayout roundPanel8Layout = new javax.swing.GroupLayout(roundPanel8);
@@ -305,7 +266,13 @@ public class Form_Garantia extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-
+        if (Integer.parseInt(txt1.getValue().toString()) <= 0) {
+            JOptionPane.showMessageDialog(null, "No hay garantia por eliminar", "", JOptionPane.WARNING_MESSAGE);
+        } else {
+            h = new hilos("eliminarGarantia");
+            h.setId(Integer.parseInt(txt1.getValue().toString()));
+            h.start();
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregarMouseClicked
@@ -313,15 +280,70 @@ public class Form_Garantia extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAgregarMouseClicked
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        if (txt4.getValue().toString().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Componente(s) vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else {
+            try {
+                garantia = new Garantia(
+                        Double.parseDouble(txt2.getValue().toString()),
+                        txt3.getSelectedItem().toString(),
+                        Integer.parseInt(txt4.getValue().toString())
+                );
+                
 
+                h = new hilos("insertarGarantia");
+                h.setObjeto(garantia);
+                h.start();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Ingrese datos correctos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+         if (Integer.parseInt(txt1.getValue().toString()) > 0) {
+            try {
 
+                garantia = new Garantia(
+                        Integer.parseInt(txt1.getValue().toString()),
+                        Double.parseDouble(txt2.getValue().toString()),
+                        txt3.getSelectedItem().toString(),
+                        Integer.parseInt(txt4.getValue().toString())
+                );            
+
+                h = new hilos("cambiarGarantia");
+                h.setObjeto(garantia);
+                h.start();
+            } catch (NumberFormatException | NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "Ingrese datos correctos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay garantia por cambiar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        tableModel.setRowCount(0);
 
+        if (Integer.parseInt(txt1.getValue().toString()) > 0) {
+
+            h = new hilos("consultarGarantia");
+            h.setId(Integer.parseInt(txt1.getValue().toString()));
+            h.start();
+            try {
+                h.join();
+                garantia = (Garantia) h.getObjeto();
+            } catch (InterruptedException b) {
+                b.printStackTrace();
+            }
+
+            if (garantia != null) {
+                tableModel.addRow(new Object[]{garantia.getId(),garantia.getFecha(),garantia.getCantidad(),garantia.getEstado(),garantia.getDonador(),garantia.getCirculo()});
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay garantia", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -331,20 +353,42 @@ public class Form_Garantia extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        tableModel.setRowCount(0);
 
+        h = new hilos("consultarTGarantia");
+        h.start();
+        try {
+            h.join();
+            garantias = (ArrayList<Garantia>) h.getObjeto();
+        } catch (InterruptedException b) {
+            b.printStackTrace();
+        }
+        if(!garantias.isEmpty()){
+            for (Garantia a : garantias) {
+            tableModel.addRow(new Object[]{a.getId(),a.getFecha(), a.getCantidad(), a.getEstado(), a.getDonador(), a.getCirculo()});
+        }
+        }else{
+            JOptionPane.showMessageDialog(null, "No hay garantias registrados", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txt3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt3ActionPerformed
 
-    private void txt4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt4ActionPerformed
-
-    private void txt5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt5ActionPerformed
+    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
+        int i = tabla.getSelectedRow();
+        
+        //id
+        txt1.setValue(tableModel.getValueAt(i, 0));
+        //Cantidad
+        txt2.setValue(tableModel.getValueAt(i, 2));
+        //Estado
+        txt3.setSelectedItem(tableModel.getValueAt(i, 3).toString());
+        //Donador
+        txt4.setValue(tableModel.getValueAt(i, 4));
+        
+    }//GEN-LAST:event_tablaMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -355,20 +399,16 @@ public class Form_Garantia extends javax.swing.JPanel {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane5;
     private com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel roundPanel1;
     private com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel roundPanel8;
     private javax.swing.JTable tabla;
     private javax.swing.JSpinner txt1;
-    private javax.swing.JTextField txt10;
-    private javax.swing.JTextField txt2;
-    private javax.swing.JTextField txt3;
-    private javax.swing.JTextField txt4;
-    private javax.swing.JTextField txt5;
+    private javax.swing.JSpinner txt2;
+    private javax.swing.JComboBox<String> txt3;
+    private javax.swing.JSpinner txt4;
     // End of variables declaration//GEN-END:variables
 }

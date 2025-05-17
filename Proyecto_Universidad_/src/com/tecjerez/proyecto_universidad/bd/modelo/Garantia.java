@@ -8,13 +8,27 @@ public class Garantia {
     //Foreing
     private int donador;
     private int circulo;
-    private int pago;
 
-    public Garantia(int id, String fecha, double cantidad, String estado) {
+    public Garantia(int id, String fecha, double cantidad, String estado, int donador, int circulo) {
         this.id = id;
         this.fecha = fecha;
         this.cantidad = cantidad;
         this.estado = estado;
+        this.donador = donador; 
+        this.circulo = circulo;
+    }
+    
+    public Garantia(int id, double cantidad, String estado, int donador) {
+        this.id = id;
+        this.cantidad = cantidad;
+        this.estado = estado;
+        this.donador = donador; 
+    }
+    
+    public Garantia(double cantidad, String estado, int donador) {
+        this.cantidad = cantidad;
+        this.estado = estado;
+        this.donador = donador;
     }
 
     public int getId() {
@@ -64,14 +78,4 @@ public class Garantia {
     public void setCirculo(int circulo) {
         this.circulo = circulo;
     }
-
-    public int getPago() {
-        return pago;
-    }
-
-    public void setPago(int pago) {
-        this.pago = pago;
-    }
-    
-    
 }

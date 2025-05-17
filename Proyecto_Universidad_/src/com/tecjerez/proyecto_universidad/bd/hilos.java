@@ -2,8 +2,10 @@ package com.tecjerez.proyecto_universidad.bd;
 
 import com.tecjerez.proyecto_universidad.bd.controlador.CRUDDonador;
 import com.tecjerez.proyecto_universidad.bd.controlador.PagoCRUD;
+import com.tecjerez.proyecto_universidad.bd.controlador.VoluntarioCRUD;
 import com.tecjerez.proyecto_universidad.bd.modelo.Donador;
 import com.tecjerez.proyecto_universidad.bd.modelo.Pago;
+import com.tecjerez.proyecto_universidad.bd.modelo.Voluntario;
 
 public class hilos extends Thread {
 
@@ -11,6 +13,7 @@ public class hilos extends Thread {
     Object objeto;
     int id;
     CRUDDonador donador = new CRUDDonador();
+    VoluntarioCRUD voluntario = new VoluntarioCRUD();
 
     public hilos(String operacion) {
         this.operacio = operacion;
@@ -34,6 +37,21 @@ public class hilos extends Thread {
                 break;
             case "consultarTDonador":
                 objeto = donador.buscarTodos();
+                break;
+            case "insertarVoluntario":
+                voluntario.insertar((Voluntario) objeto);
+                break;
+            case "eliminarVoluntario":
+                voluntario.eliminar(id);
+                break;
+            case "cambiarVoluntario":
+                voluntario.actualizar((Voluntario) objeto);
+                break;
+            case "consultarVoluntario":
+                objeto = voluntario.buscar(id);
+                break;
+            case "consultarTVoluntario":
+                objeto = voluntario.buscarTodos();
                 break;
         }
     }

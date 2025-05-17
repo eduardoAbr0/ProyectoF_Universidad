@@ -14,6 +14,13 @@ public class Voluntario {
         this.segundo_apellido = segundo_apellido;
         this.telefono = telefono;
     }
+    
+    public Voluntario(String nombre, String primer_apellido, String segundo_apellido, int telefono) {
+        this.nombre = nombre;
+        this.primer_apellido = primer_apellido;
+        this.segundo_apellido = segundo_apellido;
+        this.telefono = telefono;
+    }
 
     public int getId() {
         return id;

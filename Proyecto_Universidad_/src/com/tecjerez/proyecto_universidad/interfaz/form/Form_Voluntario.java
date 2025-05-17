@@ -4,10 +4,19 @@
  */
 package com.tecjerez.proyecto_universidad.interfaz.form;
 
+import com.tecjerez.proyecto_universidad.bd.hilos;
+import com.tecjerez.proyecto_universidad.bd.modelo.Voluntario;
 import java.awt.Component;
 import java.awt.Container;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import java.sql.SQLException;
+import com.tecjerez.proyecto_universidad.bd.conexionDB;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JTable;
 
 /**
  *
@@ -15,9 +24,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Form_Voluntario extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Form_Voluntario
-     */
+    Voluntario voluntario;
+    hilos h;
+    ArrayList<Voluntario> voluntarios;
     DefaultTableModel tableModel = new DefaultTableModel();
     
     public Form_Voluntario() {
@@ -27,7 +36,6 @@ public class Form_Voluntario extends javax.swing.JPanel {
         tableModel.addColumn("Nombre");
         tableModel.addColumn("Primer apellido");
         tableModel.addColumn("Segundo apellido");
-        tableModel.addColumn("Tercer apellido");
         tableModel.addColumn("Telefono");
         
         tabla.setModel(tableModel);
@@ -62,7 +70,6 @@ public class Form_Voluntario extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         btnEliminar = new com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges();
         btnAgregar = new com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges();
@@ -74,7 +81,6 @@ public class Form_Voluntario extends javax.swing.JPanel {
         txt3 = new javax.swing.JTextField();
         txt4 = new javax.swing.JTextField();
         txt5 = new javax.swing.JTextField();
-        txt10 = new javax.swing.JTextField();
         txt1 = new javax.swing.JSpinner();
 
         roundPanel8.setBackground(new java.awt.Color(102, 255, 255));
@@ -83,6 +89,11 @@ public class Form_Voluntario extends javax.swing.JPanel {
         tabla.setRowHeight(25);
         tabla.setSelectionBackground(new java.awt.Color(232, 57, 95));
         tabla.getTableHeader().setReorderingAllowed(false);
+        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClicked(evt);
+            }
+        });
         jScrollPane5.setViewportView(tabla);
 
         javax.swing.GroupLayout roundPanel8Layout = new javax.swing.GroupLayout(roundPanel8);
@@ -119,10 +130,6 @@ public class Form_Voluntario extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
         jLabel4.setText("Segundo apellido");
         jLabel4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
-        jLabel5.setText("Tercer apellido");
-        jLabel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
         jLabel9.setText("Número de telefono");
@@ -180,6 +187,11 @@ public class Form_Voluntario extends javax.swing.JPanel {
         });
 
         txt2.setToolTipText("");
+        txt2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt2KeyReleased(evt);
+            }
+        });
 
         txt3.setToolTipText("");
         txt3.addActionListener(new java.awt.event.ActionListener() {
@@ -196,13 +208,6 @@ public class Form_Voluntario extends javax.swing.JPanel {
         });
 
         txt5.setToolTipText("");
-        txt5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt5ActionPerformed(evt);
-            }
-        });
-
-        txt10.setToolTipText("");
 
         javax.swing.GroupLayout roundPanel1Layout = new javax.swing.GroupLayout(roundPanel1);
         roundPanel1.setLayout(roundPanel1Layout);
@@ -228,7 +233,6 @@ public class Form_Voluntario extends javax.swing.JPanel {
                     .addGroup(roundPanel1Layout.createSequentialGroup()
                         .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -239,9 +243,8 @@ public class Form_Voluntario extends javax.swing.JPanel {
                             .addComponent(txt2)
                             .addComponent(txt1, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txt10)
-                                .addComponent(txt4, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                                .addComponent(txt5)))))
+                                .addComponent(txt5)
+                                .addComponent(txt4, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         roundPanel1Layout.setVerticalGroup(
@@ -265,13 +268,9 @@ public class Form_Voluntario extends javax.swing.JPanel {
                         .addComponent(jLabel4))
                     .addComponent(txt4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txt5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel9)
-                    .addComponent(txt10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -304,7 +303,13 @@ public class Form_Voluntario extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-
+        if (Integer.parseInt(txt1.getValue().toString()) <= 0) {
+            JOptionPane.showMessageDialog(null, "No hay voluntario por eliminar", "", JOptionPane.WARNING_MESSAGE);
+        } else {
+            h = new hilos("eliminarVoluntario");
+            h.setId(Integer.parseInt(txt1.getValue().toString()));
+            h.start();
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregarMouseClicked
@@ -312,15 +317,75 @@ public class Form_Voluntario extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAgregarMouseClicked
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        if (txt2.getText().isEmpty() || txt3.getText().isEmpty() || txt4.getText().isEmpty() || txt5.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Componente(s) vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else {
+            try {
+                voluntario = new Voluntario(
+                        txt2.getText(),
+                        txt3.getText(),
+                        txt4.getText(),
+                        Integer.parseInt(txt5.getText())         
+                );
 
+                h = new hilos("insertarVoluntario");
+                h.setObjeto(voluntario);
+                h.start();
+            } catch (NumberFormatException e) {
+                System.out.println(e);
+                JOptionPane.showMessageDialog(null, "Ingrese datos correctos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        if (txt2.getText().isEmpty() || txt3.getText().isEmpty() || txt4.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Componente(s) vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else if (Integer.parseInt(txt1.getValue().toString()) > 0) {
+            try {
 
+                voluntario = new Voluntario(
+                        Integer.parseInt(txt1.getValue().toString()),
+                        txt2.getText(),
+                        txt3.getText(),
+                        txt4.getText(),
+                        Integer.parseInt(txt5.getText())         
+                );
+                
+
+                h = new hilos("cambiarVoluntario");
+                h.setObjeto(voluntario);
+                h.start();
+            } catch (NumberFormatException | NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "Ingrese datos correctos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay registro por cambiar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        tableModel.setRowCount(0);
 
+        if (Integer.parseInt(txt1.getValue().toString()) > 0) {
+
+            h = new hilos("consultarVoluntario");
+            h.setId(Integer.parseInt(txt1.getValue().toString()));
+            h.start();
+            try {
+                h.join();
+                voluntario = (Voluntario) h.getObjeto();
+            } catch (InterruptedException b) {
+                b.printStackTrace();
+            }
+
+            if (voluntario != null) {
+                tableModel.addRow(new Object[]{voluntario.getId(),voluntario.getNombre(),voluntario.getPrimer_apellido(),voluntario.getSegundo_apellido(),voluntario.getTelefono()});
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró voluntario", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -330,7 +395,23 @@ public class Form_Voluntario extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        tableModel.setRowCount(0);
 
+        h = new hilos("consultarTVoluntario");
+        h.start();
+        try {
+            h.join();
+            voluntarios = (ArrayList<Voluntario>) h.getObjeto();
+        } catch (InterruptedException b) {
+            b.printStackTrace();
+        }
+        if(!voluntarios.isEmpty()){
+            for (Voluntario a : voluntarios) {
+            tableModel.addRow(new Object[]{a.getId(),a.getNombre(),a.getPrimer_apellido(),a.getSegundo_apellido(),a.getTelefono()});
+        }
+        }else{
+            JOptionPane.showMessageDialog(null, "No hay voluntarios registrados", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txt3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt3ActionPerformed
@@ -341,9 +422,64 @@ public class Form_Voluntario extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt4ActionPerformed
 
-    private void txt5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt5ActionPerformed
+    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
+        int i = tabla.getSelectedRow();
+        
+        //id
+        txt1.setValue(tableModel.getValueAt(i, 0));
+        //Nombre
+        txt2.setText(tableModel.getValueAt(i, 1).toString());
+        //Papellido
+        txt3.setText(tableModel.getValueAt(i, 2).toString());
+        //Sapellido
+        txt4.setText(tableModel.getValueAt(i, 3).toString());
+        //Num telefono
+        txt5.setText(tableModel.getValueAt(i, 4).toString());
+    }//GEN-LAST:event_tablaMouseClicked
+    
+    public void busquedas(JTable tabla, String campo, String filtro) {
+        ArrayList<Voluntario> vl = new ArrayList<>();
+        tableModel.setRowCount(0);
+
+        try {
+            String CONSULTA = "SELECT * FROM voluntario WHERE " + campo + " LIKE '" + filtro + "%' ORDER BY nombre";
+            System.out.println(CONSULTA);
+
+            ResultSet resultSet = null;
+            PreparedStatement preparedStatement = null;
+
+            try {
+                preparedStatement = conexionDB.getInstancia().getConexion().prepareStatement(CONSULTA);
+                resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    Voluntario voluntario = null;
+                    int id = resultSet.getInt(1);
+                    String nombre = resultSet.getString("Nombre");
+                    String pApellido = resultSet.getString("Primer_Apellido");
+                    String sApellido = resultSet.getString("Segundo_Apellido");
+                    int telefono = resultSet.getInt("Telefono");
+                    
+                    voluntario = new Voluntario(id, nombre, pApellido, sApellido, telefono);
+                    vl.add(voluntario);
+                }
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex);
+            }
+
+            for (Voluntario a : vl) {
+                tableModel.addRow(new Object[]{a.getId(),a.getNombre(),a.getPrimer_apellido(),a.getSegundo_apellido(),a.getTelefono()});
+            }
+            //actualizarTablas(tabla);
+        }//try
+        catch (Exception sqle) {
+            JOptionPane.showMessageDialog(null, sqle);
+        }   
+    }
+    
+    private void txt2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt2KeyReleased
+        busquedas(tabla, "nombre", txt2.getText());
+    }//GEN-LAST:event_txt2KeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -357,14 +493,12 @@ public class Form_Voluntario extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane5;
     private com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel roundPanel1;
     private com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel roundPanel8;
     private javax.swing.JTable tabla;
     private javax.swing.JSpinner txt1;
-    private javax.swing.JTextField txt10;
     private javax.swing.JTextField txt2;
     private javax.swing.JTextField txt3;
     private javax.swing.JTextField txt4;

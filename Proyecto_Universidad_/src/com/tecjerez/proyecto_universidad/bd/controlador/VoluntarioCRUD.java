@@ -103,7 +103,7 @@ public class VoluntarioCRUD implements DAOVoluntario {
     }
 
     @Override
-    public Voluntario buscar(Integer id) throws SQLException {
+    public Voluntario buscar(Integer id) {
         String sql = "SELECT * FROM voluntario WHERE id = ?";
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -136,7 +136,7 @@ public class VoluntarioCRUD implements DAOVoluntario {
     }
 
     @Override
-    public List<Voluntario> buscarTodos() throws SQLException {
+    public List<Voluntario> buscarTodos(){
         String sql = "SELECT * FROM voluntario";
         PreparedStatement ps = null;
         ResultSet rs = null;

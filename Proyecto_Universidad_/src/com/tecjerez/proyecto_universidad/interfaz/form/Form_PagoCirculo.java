@@ -4,8 +4,13 @@
  */
 package com.tecjerez.proyecto_universidad.interfaz.form;
 
+import com.tecjerez.proyecto_universidad.bd.hilos;
+import com.tecjerez.proyecto_universidad.bd.modelo.Circulo;
+import com.tecjerez.proyecto_universidad.bd.modelo.Pago;
 import java.awt.Component;
 import java.awt.Container;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -15,9 +20,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Form_PagoCirculo extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Form_PagoCirculo
-     */
+    Pago pago;
+    Circulo circulo;
+    hilos h;
+    ArrayList<Circulo> circulos;
+    ArrayList<Pago> pagos;
     DefaultTableModel tableModel = new DefaultTableModel();
     DefaultTableModel tableModel1 = new DefaultTableModel();
     
@@ -26,11 +33,13 @@ public class Form_PagoCirculo extends javax.swing.JPanel {
         
         tableModel.addColumn("ID");
         tableModel.addColumn("Nombre");
+        tableModel.addColumn("Valor");
         
         tableModel1.addColumn("ID");
         tableModel1.addColumn("Fecha");
         tableModel1.addColumn("Monto");
         tableModel1.addColumn("Metodo");
+        tableModel1.addColumn("Garantia");
         
         tabla.setModel(tableModel);
         tabla1.setModel(tableModel1);
@@ -69,24 +78,26 @@ public class Form_PagoCirculo extends javax.swing.JPanel {
         jButton6 = new javax.swing.JButton();
         txt5 = new javax.swing.JTextField();
         txt7 = new javax.swing.JSpinner();
+        jLabel14 = new javax.swing.JLabel();
+        txt11 = new javax.swing.JSpinner();
         roundPanel10 = new com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         roundPanel4 = new com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         btnEliminar3 = new com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges();
         btnAgregar3 = new com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges();
         btnActualizar3 = new com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges();
         btnBuscar3 = new com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
-        txt6 = new javax.swing.JTextField();
-        txt8 = new javax.swing.JSpinner();
+        idpago = new javax.swing.JSpinner();
         jLabel11 = new javax.swing.JLabel();
-        txt9 = new javax.swing.JTextField();
+        monto = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        txt10 = new javax.swing.JTextField();
+        metodo = new javax.swing.JComboBox<>();
+        jLabel15 = new javax.swing.JLabel();
+        garantia = new javax.swing.JSpinner();
         roundPanel11 = new com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
         tabla1 = new javax.swing.JTable();
@@ -159,6 +170,10 @@ public class Form_PagoCirculo extends javax.swing.JPanel {
 
         txt5.setToolTipText("");
 
+        jLabel14.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        jLabel14.setText("Valor minimo");
+        jLabel14.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
+
         javax.swing.GroupLayout roundPanel3Layout = new javax.swing.GroupLayout(roundPanel3);
         roundPanel3.setLayout(roundPanel3Layout);
         roundPanel3Layout.setHorizontalGroup(
@@ -183,11 +198,13 @@ public class Form_PagoCirculo extends javax.swing.JPanel {
                     .addGroup(roundPanel3Layout.createSequentialGroup()
                         .addGroup(roundPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addGroup(roundPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txt5)
-                            .addComponent(txt7, javax.swing.GroupLayout.Alignment.LEADING))))
+                        .addGroup(roundPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt5, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txt7)
+                            .addComponent(txt11))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         roundPanel3Layout.setVerticalGroup(
@@ -201,7 +218,11 @@ public class Form_PagoCirculo extends javax.swing.JPanel {
                 .addGroup(roundPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(txt5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(roundPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel14)
+                    .addComponent(txt11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(roundPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(roundPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(btnActualizar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -229,15 +250,15 @@ public class Form_PagoCirculo extends javax.swing.JPanel {
             roundPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(roundPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                .addComponent(jScrollPane7)
                 .addContainerGap())
         );
         roundPanel10Layout.setVerticalGroup(
             roundPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, roundPanel10Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65))
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14))
         );
 
         roundPanel4.setBackground(new java.awt.Color(0, 204, 204));
@@ -245,10 +266,6 @@ public class Form_PagoCirculo extends javax.swing.JPanel {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel8.setText("ID");
         jLabel8.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
-
-        jLabel9.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
-        jLabel9.setText("Fecha");
-        jLabel9.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
 
         btnEliminar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-borrar.png"))); // NOI18N
         btnEliminar3.addActionListener(new java.awt.event.ActionListener() {
@@ -301,19 +318,26 @@ public class Form_PagoCirculo extends javax.swing.JPanel {
             }
         });
 
-        txt6.setToolTipText("");
-
         jLabel11.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
         jLabel11.setText("Monto");
         jLabel11.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
 
-        txt9.setToolTipText("");
+        monto.setToolTipText("");
 
         jLabel12.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
         jLabel12.setText("Metodo");
         jLabel12.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
 
-        txt10.setToolTipText("");
+        metodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Efectivo", "Tarjeta debido", "Tarjeta credito" }));
+        metodo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                metodoActionPerformed(evt);
+            }
+        });
+
+        jLabel15.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        jLabel15.setText("Garantia");
+        jLabel15.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
 
         javax.swing.GroupLayout roundPanel4Layout = new javax.swing.GroupLayout(roundPanel4);
         roundPanel4.setLayout(roundPanel4Layout);
@@ -340,14 +364,14 @@ public class Form_PagoCirculo extends javax.swing.JPanel {
                         .addGroup(roundPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(roundPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txt9, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt10, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt8)
-                            .addComponent(txt6))))
+                            .addComponent(monto, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(idpago)
+                            .addComponent(metodo, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(garantia, javax.swing.GroupLayout.Alignment.LEADING))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         roundPanel4Layout.setVerticalGroup(
@@ -356,20 +380,20 @@ public class Form_PagoCirculo extends javax.swing.JPanel {
                 .addGap(25, 25, 25)
                 .addGroup(roundPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(txt8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(roundPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(txt6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(idpago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(roundPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(txt9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(monto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(roundPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(txt10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
+                    .addComponent(metodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(roundPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(garantia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addGroup(roundPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(roundPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(btnActualizar3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -402,9 +426,9 @@ public class Form_PagoCirculo extends javax.swing.JPanel {
         );
         roundPanel11Layout.setVerticalGroup(
             roundPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(roundPanel11Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, roundPanel11Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -426,33 +450,35 @@ public class Form_PagoCirculo extends javax.swing.JPanel {
                     .addComponent(roundPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(roundPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(roundPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(roundPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(roundPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(roundPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(76, 76, 76))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(roundPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(roundPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(48, 48, 48)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(roundPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(roundPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(roundPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(roundPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(19, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(roundPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(roundPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 9, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar2ActionPerformed
-        // TODO add your handling code here:
+        if (Integer.parseInt(txt7.getValue().toString()) <= 0) {
+            JOptionPane.showMessageDialog(null, "No hay circulo por eliminar", "", JOptionPane.WARNING_MESSAGE);
+        } else {
+            h = new hilos("eliminarCirculo");
+            h.setId(Integer.parseInt(txt7.getValue().toString()));
+            h.start();
+        }
     }//GEN-LAST:event_btnEliminar2ActionPerformed
 
     private void btnAgregar2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregar2MouseClicked
@@ -460,27 +486,103 @@ public class Form_PagoCirculo extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAgregar2MouseClicked
 
     private void btnAgregar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar2ActionPerformed
-        // TODO add your handling code here:
+               if (txt5.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Componente(s) vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else {
+            try {
+                circulo = new Circulo(
+                        txt5.getText(),
+                        Integer.parseInt(txt11.getValue().toString())
+                );   
+
+                h = new hilos("insertarCirculo");
+                h.setObjeto(circulo);
+                h.start();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Ingrese datos correctos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+
+        }
     }//GEN-LAST:event_btnAgregar2ActionPerformed
 
     private void btnActualizar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizar2ActionPerformed
-        // TODO add your handling code here:
+        if (txt5.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Componente(s) vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else if (Integer.parseInt(txt7.getValue().toString()) > 0) {
+            try {
+                 circulo = new Circulo(
+                        Integer.parseInt(txt7.getValue().toString()),
+                        txt5.getText(),
+                        Integer.parseInt(txt11.getValue().toString())      
+                );   
+
+                h = new hilos("cambiarCirculo");
+                h.setObjeto(circulo);
+                h.start();
+            } catch (NumberFormatException | NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "Ingrese datos correctos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay circulo por cambiar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnActualizar2ActionPerformed
 
     private void btnBuscar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscar2ActionPerformed
-        // TODO add your handling code here:
+        tableModel.setRowCount(0);
+
+        if (Integer.parseInt(txt7.getValue().toString()) > 0) {
+
+            h = new hilos("consultarCirculo");
+            h.setId(Integer.parseInt(txt7.getValue().toString()));
+            h.start();
+            try {
+                h.join();
+                circulo = (Circulo) h.getObjeto();
+            } catch (InterruptedException b) {
+                b.printStackTrace();
+            }
+
+            if (circulo != null) {
+                tableModel.addRow(new Object[]{circulo.getId(),circulo.getNombre(),circulo.getMonto_minimo()});
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay circulo", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnBuscar2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
+        limpiarCampos(this);
+        tableModel.setRowCount(0);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
+        tableModel.setRowCount(0);
+
+        h = new hilos("consultarTCirculo");
+        h.start();
+        try {
+            h.join();
+            circulos = (ArrayList<Circulo>) h.getObjeto();
+        } catch (InterruptedException b) {
+            b.printStackTrace();
+        }
+        if(!circulos.isEmpty()){
+            for (Circulo a : circulos) {
+            tableModel.addRow(new Object[]{a.getId(),a.getNombre(),a.getMonto_minimo(),});
+        }
+        }else{
+            JOptionPane.showMessageDialog(null, "No hay circulos registrados", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void btnEliminar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar3ActionPerformed
-        // TODO add your handling code here:
+        if (Integer.parseInt(idpago.getValue().toString()) <= 0) {
+            JOptionPane.showMessageDialog(null, "No hay pago por eliminar", "", JOptionPane.WARNING_MESSAGE);
+        } else {
+            h = new hilos("eliminarPago");
+            h.setId(Integer.parseInt(idpago.getValue().toString()));
+            h.start();
+        }
     }//GEN-LAST:event_btnEliminar3ActionPerformed
 
     private void btnAgregar3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregar3MouseClicked
@@ -488,24 +590,101 @@ public class Form_PagoCirculo extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAgregar3MouseClicked
 
     private void btnAgregar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar3ActionPerformed
-        // TODO add your handling code here:
+        if (monto.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Componente(s) vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else {
+            try {
+                pago = new Pago(
+                        Integer.parseInt(monto.getText()),
+                        metodo.getSelectedItem().toString(),
+                        Integer.parseInt(garantia.getValue().toString())
+                );   
+
+                h = new hilos("insertarPago");
+                h.setObjeto(pago);
+                h.start();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Ingrese datos correctos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+
+        }
     }//GEN-LAST:event_btnAgregar3ActionPerformed
 
     private void btnActualizar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizar3ActionPerformed
-        // TODO add your handling code here:
+        if (monto.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Componente(s) vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else if (Integer.parseInt(idpago.getValue().toString()) > 0) {
+            try {
+
+                 pago = new Pago(
+                        Integer.parseInt(idpago.getValue().toString()),
+                        Integer.parseInt(monto.getText()),
+                        metodo.getSelectedItem().toString(),
+                        Integer.parseInt(garantia.getValue().toString())    
+                );   
+
+                h = new hilos("cambiarPago");
+                h.setObjeto(pago);
+                h.start();
+            } catch (NumberFormatException | NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "Ingrese datos correctos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay pago por cambiar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnActualizar3ActionPerformed
 
     private void btnBuscar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscar3ActionPerformed
-        // TODO add your handling code here:
+        tableModel1.setRowCount(0);
+
+        if (Integer.parseInt(idpago.getValue().toString()) > 0) {
+
+            h = new hilos("consultarPago");
+            h.setId(Integer.parseInt(idpago.getValue().toString()));
+            h.start();
+            try {
+                h.join();
+                pago = (Pago) h.getObjeto();
+            } catch (InterruptedException b) {
+                b.printStackTrace();
+            }
+
+            if (pago != null) {
+                tableModel1.addRow(new Object[]{pago.getId(),pago.getFecha(),pago.getMonto(), pago.getMetodo(),  pago.getGarantia()});
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay circulo", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnBuscar3ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
+        limpiarCampos(this);
+        tableModel1.setRowCount(0);
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
+        tableModel1.setRowCount(0);
+
+        h = new hilos("consultarTPago");
+        h.start();
+        try {
+            h.join();
+            pagos = (ArrayList<Pago>) h.getObjeto();
+        } catch (InterruptedException b) {
+            b.printStackTrace();
+        }
+        if(!pagos.isEmpty()){
+            for (Pago a : pagos) {
+            tableModel1.addRow(new Object[]{a.getId(),a.getFecha(),a.getMonto(), a.getMetodo(), a.getGarantia()});
+        }
+        }else{
+            JOptionPane.showMessageDialog(null, "No hay circulos registrados", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void metodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_metodoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_metodoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -517,6 +696,8 @@ public class Form_PagoCirculo extends javax.swing.JPanel {
     private com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges btnBuscar3;
     private com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges btnEliminar2;
     private com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges btnEliminar3;
+    private javax.swing.JSpinner garantia;
+    private javax.swing.JSpinner idpago;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
@@ -525,23 +706,23 @@ public class Form_PagoCirculo extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JComboBox<String> metodo;
+    private javax.swing.JTextField monto;
     private com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel roundPanel10;
     private com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel roundPanel11;
     private com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel roundPanel3;
     private com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel roundPanel4;
     private javax.swing.JTable tabla;
     private javax.swing.JTable tabla1;
-    private javax.swing.JTextField txt10;
+    private javax.swing.JSpinner txt11;
     private javax.swing.JTextField txt5;
-    private javax.swing.JTextField txt6;
     private javax.swing.JSpinner txt7;
-    private javax.swing.JSpinner txt8;
-    private javax.swing.JTextField txt9;
     // End of variables declaration//GEN-END:variables
 }

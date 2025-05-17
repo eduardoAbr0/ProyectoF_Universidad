@@ -14,13 +14,13 @@ public class PagoCRUD implements DAOPago {
 
     @Override
     public void insertar(Pago t) {
-        String sql = "INSERT INTO pago(fecha, monto, metodo) VALUES(?, ?, ?)";
+        String sql = "INSERT INTO pago( monto, metodo, garantia) VALUES( ?, ?, ? )";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = conexionDB.getInstancia().getConexion().prepareStatement(sql);
-            preparedStatement.setString(1, t.getFecha());
-            preparedStatement.setDouble(2, t.getMonto());
-            preparedStatement.setString(3, t.getMetodo());
+            preparedStatement.setDouble(1, t.getMonto());
+            preparedStatement.setString(2, t.getMetodo());
+            preparedStatement.setInt(3, t.getGarantia());
 
             if (preparedStatement.executeUpdate() >= 1) {
                 JOptionPane.showMessageDialog(null, "Pago agregado correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
@@ -39,14 +39,14 @@ public class PagoCRUD implements DAOPago {
 
     @Override
     public void actualizar(Pago t) {
-        String sql = "UPDATE pago SET fecha = ?, monto = ?, metodo = ? WHERE id = ?";
+        String sql = "UPDATE pago SET monto = ?, metodo = ?, garantia = ? WHERE id = ?";
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = conexionDB.getInstancia().getConexion().prepareStatement(sql);
-            preparedStatement.setString(1, t.getFecha());
-            preparedStatement.setDouble(2, t.getMonto());
-            preparedStatement.setString(3, t.getMetodo());
+            preparedStatement.setDouble(1, t.getMonto());
+            preparedStatement.setString(2, t.getMetodo());
+            preparedStatement.setInt(3, t.getGarantia());
             preparedStatement.setInt(4, t.getId());
 
             if (preparedStatement.executeUpdate() >= 1) {
@@ -94,12 +94,13 @@ public class PagoCRUD implements DAOPago {
         String fecha = rs.getString("fecha");
         double monto = rs.getDouble("monto");
         String metodo = rs.getString("metodo");
+        int garantia = rs.getInt("garantia");
 
-        return new Pago(id, fecha, monto, metodo);
+        return new Pago(id, fecha, monto, metodo, garantia);
     }
 
     @Override
-    public Pago buscar(Integer id) throws SQLException {
+    public Pago buscar(Integer id) {
         String sql = "SELECT * FROM pago WHERE id = ?";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -133,7 +134,7 @@ public class PagoCRUD implements DAOPago {
     }
 
     @Override
-    public List<Pago> buscarTodos() throws SQLException {
+    public List<Pago> buscarTodos() {
         String sql = "SELECT * FROM pago";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;

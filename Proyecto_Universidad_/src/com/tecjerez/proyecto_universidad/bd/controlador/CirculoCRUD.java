@@ -102,15 +102,14 @@ public class CirculoCRUD implements DAOCirculo{
         Circulo circulo = null;
 
         String nombre = rs.getString("Nombre");
-        Double monto = rs.getDouble("Monto_Minimo");
-
+        Double monto = rs.getDouble("Valor");
 
         circulo = new Circulo(id, nombre, monto);
         return circulo;
     }
     
     @Override
-    public Circulo buscar(Integer id) throws SQLException {
+    public Circulo buscar(Integer id) {
         String sql = "SELECT * FROM circulo WHERE id = ?";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -148,7 +147,7 @@ public class CirculoCRUD implements DAOCirculo{
     }
 
     @Override
-    public List<Circulo> buscarTodos() throws SQLException {
+    public List<Circulo> buscarTodos() {
         String sql = "SELECT * FROM circulo";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;

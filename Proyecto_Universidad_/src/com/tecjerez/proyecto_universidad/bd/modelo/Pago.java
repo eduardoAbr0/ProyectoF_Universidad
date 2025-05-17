@@ -5,12 +5,28 @@ public class Pago {
     private String fecha;
     private double monto;
     private String metodo;
+    //Foreign
+    private int garantia;
 
-    public Pago(int id, String fecha, double monto, String metodo) {
+    public Pago(int id, String fecha, double monto, String metodo, int garantia) {
         this.id = id;
         this.fecha = fecha;
         this.monto = monto;
         this.metodo = metodo;
+        this.garantia = garantia;
+    }
+    
+    public Pago(int id, double monto, String metodo, int garantia) {
+        this.id = id;
+        this.monto = monto;
+        this.metodo = metodo;
+        this.garantia = garantia;
+    }
+    
+    public Pago(double monto, String metodo, int garantia) {
+        this.monto = monto;
+        this.metodo = metodo;
+        this.garantia = garantia;
     }
 
     public int getId() {
@@ -44,6 +60,16 @@ public class Pago {
     public void setMetodo(String metodo) {
         this.metodo = metodo;
     }
+
+    public int getGarantia() {
+        return garantia;
+    }
+
+    public void setGarantia(int garantia) {
+        this.garantia = garantia;
+    }
+    
+    
      
 }
 

@@ -10,6 +10,11 @@ public class Circulo {
         this.nombre = nombre;
         this.monto_minimo = monto_minimo;
     }
+    
+    public Circulo(String nombre, double monto_minimo) {
+        this.nombre = nombre;
+        this.monto_minimo = monto_minimo;
+    }
 
     public int getId() {
         return id;

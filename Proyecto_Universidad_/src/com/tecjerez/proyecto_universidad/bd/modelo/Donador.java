@@ -28,6 +28,18 @@ public class Donador {
         this.cp = cp;
         this.colonia = colonia;
     }
+    
+    public Donador(String nombre, String primer_apellido, String segundo_apellido, int telefono, String tipo, String calle, int num_casa, int cp, String colonia) {
+        this.nombre = nombre;
+        this.primer_apellido = primer_apellido;
+        this.segundo_apellido = segundo_apellido;
+        this.telefono = telefono;
+        this.tipo = tipo;
+        this.calle = calle;
+        this.num_casa = num_casa;
+        this.cp = cp;
+        this.colonia = colonia;
+    }
 
     public int getId() {
         return id;

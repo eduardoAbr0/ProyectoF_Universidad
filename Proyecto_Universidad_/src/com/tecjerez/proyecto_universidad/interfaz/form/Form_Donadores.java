@@ -4,8 +4,17 @@
  */
 package com.tecjerez.proyecto_universidad.interfaz.form;
 
+import com.tecjerez.proyecto_universidad.bd.conexionDB;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import com.tecjerez.proyecto_universidad.bd.hilos;
+import com.tecjerez.proyecto_universidad.bd.modelo.Donador;
 import java.awt.Component;
 import java.awt.Container;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -15,10 +24,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Form_Donadores extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Form_Donadores
-     */
-    
+    Donador donador;
+    hilos h;
+    ArrayList<Donador> donadores;
     DefaultTableModel tableModel = new DefaultTableModel();
     
     public Form_Donadores() {
@@ -29,13 +37,14 @@ public class Form_Donadores extends javax.swing.JPanel {
         tableModel.addColumn("Nombre");
         tableModel.addColumn("Primer apellido");
         tableModel.addColumn("Segundo apellido");
-        tableModel.addColumn("Tercer apellido");
         tableModel.addColumn("Telefono");
         tableModel.addColumn("Tipo");
         tableModel.addColumn("Calle");
-        tableModel.addColumn("Nm. Casa");
+        tableModel.addColumn("Num_Casa");
         tableModel.addColumn("CP");
         tableModel.addColumn("Colonia");
+        tableModel.addColumn("Representante");
+        tableModel.addColumn("Voluntario");
         tableModel.addColumn("Clase");
         
         tabla.setModel(tableModel);
@@ -89,7 +98,11 @@ public class Form_Donadores extends javax.swing.JPanel {
         txt7 = new javax.swing.JSpinner();
         txt9 = new javax.swing.JSpinner();
         jLabel11 = new javax.swing.JLabel();
-        txt12 = new javax.swing.JComboBox<>();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        txt15 = new javax.swing.JSpinner();
+        txt16 = new javax.swing.JSpinner();
+        txt17 = new javax.swing.JSpinner();
         roundPanel3 = new com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
@@ -188,6 +201,11 @@ public class Form_Donadores extends javax.swing.JPanel {
         });
 
         txt2.setToolTipText("");
+        txt2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt2KeyReleased(evt);
+            }
+        });
 
         txt3.setToolTipText("");
         txt3.addActionListener(new java.awt.event.ActionListener() {
@@ -226,15 +244,17 @@ public class Form_Donadores extends javax.swing.JPanel {
             }
         });
 
-        jLabel11.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
-        jLabel11.setText("Clase");
+        jLabel11.setFont(new java.awt.Font("Segoe UI Semilight", 1, 14)); // NOI18N
+        jLabel11.setText("Clase ID");
         jLabel11.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
 
-        txt12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt12ActionPerformed(evt);
-            }
-        });
+        jLabel12.setFont(new java.awt.Font("Segoe UI Semilight", 1, 14)); // NOI18N
+        jLabel12.setText("Representante ID");
+        jLabel12.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI Semilight", 1, 14)); // NOI18N
+        jLabel13.setText("Voluntario ID");
+        jLabel13.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
 
         javax.swing.GroupLayout roundPanel1Layout = new javax.swing.GroupLayout(roundPanel1);
         roundPanel1.setLayout(roundPanel1Layout);
@@ -258,8 +278,8 @@ public class Form_Donadores extends javax.swing.JPanel {
                                 .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(roundPanel1Layout.createSequentialGroup()
-                        .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                        .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -269,7 +289,9 @@ public class Form_Donadores extends javax.swing.JPanel {
                             .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt2)
@@ -282,7 +304,9 @@ public class Form_Donadores extends javax.swing.JPanel {
                             .addComponent(txt7)
                             .addComponent(txt9)
                             .addComponent(txt1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txt12, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(txt15)
+                            .addComponent(txt16)
+                            .addComponent(txt17, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         roundPanel1Layout.setVerticalGroup(
@@ -305,23 +329,7 @@ public class Form_Donadores extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel4))
                     .addComponent(txt4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txt5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txt7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(txt8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
-                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(txt9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(txt10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -329,11 +337,35 @@ public class Form_Donadores extends javax.swing.JPanel {
                 .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(txt11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17)
+                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txt5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17)
+                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txt7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(txt12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 201, Short.MAX_VALUE)
+                    .addComponent(jLabel8)
+                    .addComponent(txt9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txt8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addGap(18, 18, 18)
+                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12))
+                .addGap(18, 18, 18)
+                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(txt17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
                 .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -353,6 +385,11 @@ public class Form_Donadores extends javax.swing.JPanel {
         tabla.setRowHeight(25);
         tabla.setSelectionBackground(new java.awt.Color(232, 57, 95));
         tabla.getTableHeader().setReorderingAllowed(false);
+        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabla);
 
         javax.swing.GroupLayout roundPanel3Layout = new javax.swing.GroupLayout(roundPanel3);
@@ -389,7 +426,13 @@ public class Form_Donadores extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        
+        if (Integer.parseInt(txt1.getValue().toString()) <= 0) {
+            JOptionPane.showMessageDialog(null, "No hay donador por eliminar", "", JOptionPane.WARNING_MESSAGE);
+        } else {
+            h = new hilos("eliminarDonador");
+            h.setId(Integer.parseInt(txt1.getValue().toString()));
+            h.start();
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregarMouseClicked
@@ -397,15 +440,92 @@ public class Form_Donadores extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAgregarMouseClicked
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-       
+       if (txt2.getText().isEmpty() || txt3.getText().isEmpty() || txt4.getText().isEmpty() || txt10.getText().isEmpty() || txt8.getText().isEmpty() || txt5.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Componente(s) vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else {
+            try {
+                donador = new Donador(
+                        txt2.getText(),
+                        txt3.getText(),
+                        txt4.getText(),
+                        Integer.parseInt(txt10.getText()),
+                        txt11.getSelectedItem().toString(),
+                        txt5.getText(),
+                        Integer.parseInt(txt7.getValue().toString()),
+                        Integer.parseInt(txt9.getValue().toString()),
+                        txt8.getText()
+                );
+                
+                donador.setRepresentante(Integer.parseInt(txt15.getValue().toString()));
+                donador.setVoluntario(Integer.parseInt(txt16.getValue().toString()));
+                donador.setVoluntario(Integer.parseInt(txt17.getValue().toString()));
+
+                h = new hilos("insertarDonador");
+                h.setObjeto(donador);
+                h.start();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Ingrese datos correctos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        
+            if (txt2.getText().isEmpty() || txt3.getText().isEmpty() || txt4.getText().isEmpty() || txt10.getText().isEmpty() || txt8.getText().isEmpty() || txt5.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Componente(s) vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else if (Integer.parseInt(txt1.getValue().toString()) > 0) {
+            try {
+
+                donador = new Donador(
+                        Integer.parseInt(txt1.getValue().toString()),
+                        txt2.getText(),
+                        txt3.getText(),
+                        txt4.getText(),
+                        Integer.parseInt(txt10.getText()),
+                        txt11.getSelectedItem().toString(),
+                        txt5.getText(),
+                        Integer.parseInt(txt7.getValue().toString()),
+                        Integer.parseInt(txt9.getValue().toString()),
+                        txt8.getText()
+                );
+                
+                donador.setRepresentante(Integer.parseInt(txt15.getValue().toString()));
+                donador.setVoluntario(Integer.parseInt(txt16.getValue().toString()));
+                donador.setVoluntario(Integer.parseInt(txt17.getValue().toString()));
+
+                h = new hilos("cambiarDonador");
+                h.setObjeto(donador);
+                h.start();
+            } catch (NumberFormatException | NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "Ingrese datos correctos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay registro por cambiar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        
+        tableModel.setRowCount(0);
+
+        if (Integer.parseInt(txt1.getValue().toString()) > 0) {
+
+            h = new hilos("consultarDonador");
+            h.setId(Integer.parseInt(txt1.getValue().toString()));
+            h.start();
+            try {
+                h.join();
+                donador = (Donador) h.getObjeto();
+            } catch (InterruptedException b) {
+                b.printStackTrace();
+            }
+
+            if (donador != null) {
+                tableModel.addRow(new Object[]{donador.getId(),donador.getNombre(),donador.getPrimer_apellido(),donador.getSegundo_apellido(),donador.getTelefono(),donador.getTipo(),donador.getCalle(),donador.getNum_casa(),donador.getCp()
+                ,donador.getColonia(),donador.getRepresentante(),donador.getVoluntario(), donador.getClase()});
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay donador", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -415,7 +535,25 @@ public class Form_Donadores extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        tableModel.setRowCount(0);
 
+        h = new hilos("consultarTDonador");
+        h.start();
+        try {
+            h.join();
+            donadores = (ArrayList<Donador>) h.getObjeto();
+        } catch (InterruptedException b) {
+            b.printStackTrace();
+        }
+        if(!donadores.isEmpty()){
+            for (Donador a : donadores) {
+            tableModel.addRow(new Object[]{a.getId(),a.getNombre(),a.getPrimer_apellido(),a.getSegundo_apellido(),a.getTelefono(),a.getTipo(),a.getCalle(),a.getNum_casa(),a.getCp()
+                ,a.getColonia(),a.getRepresentante(),a.getVoluntario(), a.getClase()});
+        }
+        }else{
+            JOptionPane.showMessageDialog(null, "No hay donadores registrados", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txt3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt3ActionPerformed
@@ -438,10 +576,94 @@ public class Form_Donadores extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt11ActionPerformed
 
-    private void txt12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt12ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt12ActionPerformed
+    private void txt2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt2KeyReleased
+        busquedas(tabla, "Nombre", txt2.getText());
+    }//GEN-LAST:event_txt2KeyReleased
 
+    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
+        int i = tabla.getSelectedRow();
+        
+        //id
+        txt1.setValue(tableModel.getValueAt(i, 0));
+        //Nombre
+        txt2.setText(tableModel.getValueAt(i, 1).toString());
+        //Papellido
+        txt3.setText(tableModel.getValueAt(i, 2).toString());
+        //Sapellido
+        txt4.setText(tableModel.getValueAt(i, 3).toString());
+        //Num telefono
+        txt10.setText(tableModel.getValueAt(i, 4).toString());
+        //Tipo
+        txt11.setSelectedItem(tableModel.getValueAt(i, 5).toString());
+        //Calle
+        txt5.setText(tableModel.getValueAt(i, 6).toString());
+        //Colonia
+        txt8.setText(tableModel.getValueAt(i, 9).toString());
+        //Num casa
+        txt7.setValue(tableModel.getValueAt(i, 7));
+        //CP
+        txt9.setValue(tableModel.getValueAt(i, 8));
+        //Representante
+        txt15.setValue(tableModel.getValueAt(i, 10));
+        //Voluntario
+        txt16.setValue(tableModel.getValueAt(i, 11));
+        //Clase
+        txt17.setValue(tableModel.getValueAt(i, 12));
+        
+        
+    }//GEN-LAST:event_tablaMouseClicked
+    
+    public void busquedas(JTable tabla, String campo, String filtro) {
+        ArrayList<Donador> dn = new ArrayList<>();
+        tableModel.setRowCount(0);
+
+        try {
+            String CONSULTA = "SELECT * FROM donador WHERE " + campo + " LIKE '" + filtro + "%' ORDER BY nombre";
+            System.out.println(CONSULTA);
+
+            ResultSet resultSet = null;
+            PreparedStatement preparedStatement = null;
+
+            try {
+                preparedStatement = conexionDB.getInstancia().getConexion().prepareStatement(CONSULTA);
+                resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    Donador donador = null;
+                    int id = resultSet.getInt(1);
+                    String nombre = resultSet.getString("Nombre");
+                    String pApellido = resultSet.getString("Primer_Apellido");
+                    String sApellido = resultSet.getString("Segundo_Apellido");
+                    int telefono = resultSet.getInt("Telefono");
+                    String tipo = resultSet.getString("Tipo");
+                    String calle = resultSet.getString("Calle");
+                    int numeroCasa = resultSet.getInt("Num_Casa");
+                    int cp = resultSet.getInt("CP");
+                    String colonia = resultSet.getString("Colonia");
+                    int representante = resultSet.getInt("Representante");
+                    int voluntario = resultSet.getInt("Voluntario");
+                    int clase = resultSet.getInt("Clase");
+                    
+                    donador = new Donador(id, nombre, pApellido, sApellido, telefono, tipo, calle, numeroCasa, cp, colonia);
+                    donador.setRepresentante(representante);
+                    donador.setVoluntario(voluntario);
+                    donador.setClase(clase);
+                    dn.add(donador);
+                }
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex);
+            }
+
+            for (Donador a : dn) {
+                tableModel.addRow(new Object[]{a.getId(),a.getNombre(),a.getPrimer_apellido(),a.getSegundo_apellido(),a.getTelefono(),a.getTipo(),a.getCalle(),a.getNum_casa(),a.getCp()
+                ,a.getColonia(),a.getRepresentante(),a.getVoluntario(), a.getClase()});
+            }
+            //actualizarTablas(tabla);
+        }//try
+        catch (Exception sqle) {
+            JOptionPane.showMessageDialog(null, sqle);
+        }   
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges btnActualizar;
@@ -453,6 +675,8 @@ public class Form_Donadores extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -468,7 +692,9 @@ public class Form_Donadores extends javax.swing.JPanel {
     private javax.swing.JSpinner txt1;
     private javax.swing.JTextField txt10;
     private javax.swing.JComboBox<String> txt11;
-    private javax.swing.JComboBox<String> txt12;
+    private javax.swing.JSpinner txt15;
+    private javax.swing.JSpinner txt16;
+    private javax.swing.JSpinner txt17;
     private javax.swing.JTextField txt2;
     private javax.swing.JTextField txt3;
     private javax.swing.JTextField txt4;

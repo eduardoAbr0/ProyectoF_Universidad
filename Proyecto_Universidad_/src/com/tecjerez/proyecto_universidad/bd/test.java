@@ -22,7 +22,10 @@ public class test {
             PreparedStatement stmt = conexion.prepareStatement(sql);
             stmt.setString(1, "Círculo Diamante");
             stmt.setDouble(2, 75000.00);
-            stmt.executeUpdate();
+            if(stmt.executeUpdate()==1){
+                System.out.println("Ejecucion sql");
+            }
+           
 
             // Cerrar conexión
             conexion.close();

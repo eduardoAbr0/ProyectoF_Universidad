@@ -128,7 +128,7 @@ public class CRUDDonador implements DAODonador {
     }
 
     @Override
-    public Donador buscar(Integer id) throws SQLException {
+    public Donador buscar(Integer id){
         String sql = "SELECT * FROM donador WHERE id = ?";
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -140,17 +140,29 @@ public class CRUDDonador implements DAODonador {
             rs = ps.executeQuery();
             if (rs.next()) {
                 d = convertir(rs, id);
+            }else {
+                SwingUtilities.invokeLater(() -> {
+                JOptionPane.showMessageDialog(null, "No se encontró registro", "Error", JOptionPane.WARNING_MESSAGE);
+            });
             }
+        }catch(SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error SQL", "Error", JOptionPane.ERROR_MESSAGE);
         } finally {
-            if (rs != null) rs.close();
-            if (ps != null) ps.close();
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error SQL", "Error", JOptionPane.ERROR_MESSAGE);
+            }  
         }
 
         return d;
     }
 
     @Override
-    public List<Donador> buscarTodos() throws SQLException {
+    public List<Donador> buscarTodos(){
         String sql = "SELECT * FROM donador";
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -163,11 +175,21 @@ public class CRUDDonador implements DAODonador {
                 int id = rs.getInt("id");
                 donadores.add(convertir(rs, id));
             }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error SQL", "Error", JOptionPane.ERROR_MESSAGE);
         } finally {
-            if (rs != null) rs.close();
-            if (ps != null) ps.close();
+            
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error SQL", "Error", JOptionPane.ERROR_MESSAGE);
         }
-
+            
+        }
+        
         return donadores;
     }
 }

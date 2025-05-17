@@ -12,7 +12,7 @@ public class conexionDB {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
 
-            String connectionUrl = "jdbc:oracle:thin:@192.168.1.57:1521/freepdb1";
+            String connectionUrl = "jdbc:oracle:thin:@//192.168.1.57:1521/freepdb1";
 
             String user = "universidad";
             String password = "universidad123";

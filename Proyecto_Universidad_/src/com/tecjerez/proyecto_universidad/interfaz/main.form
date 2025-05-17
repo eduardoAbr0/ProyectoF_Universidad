@@ -64,7 +64,7 @@
                   <Component id="header1" min="-2" pref="57" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="menu1" pref="722" max="32767" attributes="0"/>
+                      <Component id="menu1" pref="742" max="32767" attributes="0"/>
                       <Component id="body" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>

@@ -3,6 +3,7 @@ package com.tecjerez.proyecto_universidad.bd;
 import com.tecjerez.proyecto_universidad.bd.controlador.CRUDDonador;
 import com.tecjerez.proyecto_universidad.bd.controlador.CirculoCRUD;
 import com.tecjerez.proyecto_universidad.bd.controlador.ClaseCRUD;
+import com.tecjerez.proyecto_universidad.bd.controlador.DonadorEventoCRUD;
 import com.tecjerez.proyecto_universidad.bd.controlador.EventoCRUD;
 import com.tecjerez.proyecto_universidad.bd.controlador.GarantiaCRUD;
 import com.tecjerez.proyecto_universidad.bd.controlador.PagoCRUD;
@@ -11,6 +12,7 @@ import com.tecjerez.proyecto_universidad.bd.controlador.VoluntarioCRUD;
 import com.tecjerez.proyecto_universidad.bd.modelo.Circulo;
 import com.tecjerez.proyecto_universidad.bd.modelo.Clase;
 import com.tecjerez.proyecto_universidad.bd.modelo.Donador;
+import com.tecjerez.proyecto_universidad.bd.modelo.DonadorEvento;
 import com.tecjerez.proyecto_universidad.bd.modelo.Evento;
 import com.tecjerez.proyecto_universidad.bd.modelo.Garantia;
 import com.tecjerez.proyecto_universidad.bd.modelo.Pago;
@@ -30,6 +32,8 @@ public class hilos extends Thread {
     GarantiaCRUD garantia = new GarantiaCRUD();
     EventoCRUD evento = new EventoCRUD();
     ClaseCRUD clase = new ClaseCRUD();
+    DonadorEventoCRUD donadorEvento = new DonadorEventoCRUD();
+    
 
     public hilos(String operacion) {
         this.operacio = operacion;
@@ -87,6 +91,12 @@ public class hilos extends Thread {
             case "cambiarClase" -> clase.actualizar((Clase) objeto);
             case "consultarClase" -> objeto = clase.buscar(id);
             case "consultarTClase" -> objeto = clase.buscarTodos();
+            
+            case "insertarDonadorEvento" -> donadorEvento.insertar((DonadorEvento) objeto);
+            case "eliminarDonadorEvento" -> donadorEvento.eliminar(id);
+            case "cambiarDonadorEvento" -> donadorEvento.actualizar((DonadorEvento) objeto);
+            case "consultarDonadorEvento" -> objeto = donadorEvento.buscar(id);
+            case "consultarTDonadorEvento" -> objeto = donadorEvento.buscarTodos();
         }
     }
 

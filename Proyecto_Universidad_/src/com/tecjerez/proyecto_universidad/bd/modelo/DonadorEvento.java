@@ -1,14 +1,31 @@
 package com.tecjerez.proyecto_universidad.bd.modelo;
 
 public class DonadorEvento {
+    private int id;
+    private double donativo;
+    //Foreign
     private int idDonador;
     private int idEvento;
-    private double donativo;
 
+    public DonadorEvento(int id, int idDonador, int idEvento, double donativo) {
+        this.id = id;
+        this.idDonador = idDonador;
+        this.idEvento = idEvento;
+        this.donativo = donativo;
+    }
+    
     public DonadorEvento(int idDonador, int idEvento, double donativo) {
         this.idDonador = idDonador;
         this.idEvento = idEvento;
         this.donativo = donativo;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getIdDonador() {

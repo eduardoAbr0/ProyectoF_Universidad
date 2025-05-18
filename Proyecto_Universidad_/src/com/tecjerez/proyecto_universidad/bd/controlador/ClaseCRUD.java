@@ -19,7 +19,7 @@ public class ClaseCRUD implements DAOClase {
 
     @Override
     public void insertar(Clase t) {
-        String sql = "INSERT INTO clase(Anio_Clase, Nivel, Carrera) VALUES(?,?,?)";
+        String sql = "INSERT INTO clase(Anio_Clase, Nivel, Carrera) VALUES(TO_DATE(?, 'YYYY'),?,?)";
         PreparedStatement ps = null;
 
         try {
@@ -45,7 +45,7 @@ public class ClaseCRUD implements DAOClase {
 
     @Override
     public void actualizar(Clase t) {
-        String sql = "UPDATE clase SET Anio_Clase = ?, Nivel = ?, Carrera = ? WHERE id = ?";
+        String sql = "UPDATE clase SET Anio_Clase = TO_DATE(?, 'YYYY'), Nivel = ?, Carrera = ? WHERE id = ?";
         PreparedStatement ps = null;
 
         try {
@@ -105,7 +105,7 @@ public class ClaseCRUD implements DAOClase {
     }
 
     @Override
-    public Clase buscar(Integer id) throws SQLException {
+    public Clase buscar(Integer id){
         String sql = "SELECT * FROM clase WHERE id = ?";
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -124,16 +124,21 @@ public class ClaseCRUD implements DAOClase {
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error al buscar clase", "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            if (rs != null) rs.close();
-            if (ps != null) ps.close();
+        } finally {  
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error SQL", "Error", JOptionPane.ERROR_MESSAGE);
+            }   
         }
 
         return clase;
     }
 
     @Override
-    public List<Clase> buscarTodos() throws SQLException {
+    public List<Clase> buscarTodos() {
         String sql = "SELECT * FROM clase";
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -150,9 +155,14 @@ public class ClaseCRUD implements DAOClase {
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error al buscar todas las clases", "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            if (rs != null) rs.close();
-            if (ps != null) ps.close();
+        } finally {  
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error SQL", "Error", JOptionPane.ERROR_MESSAGE);
+            }   
         }
 
         return lista;

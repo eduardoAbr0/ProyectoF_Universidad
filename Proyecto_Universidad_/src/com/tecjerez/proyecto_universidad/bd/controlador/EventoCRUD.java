@@ -15,12 +15,15 @@ public class EventoCRUD implements DAOEvento {
 
     @Override
     public void insertar(Evento t) {
-        String sql = "INSERT INTO evento(Fecha) VALUES(?)";
+        String sql = "INSERT INTO evento(Fecha, Nombre) VALUES(TO_DATE(?, 'YYYY-MM-DD'), ?)";
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = conexionDB.getInstancia().getConexion().prepareStatement(sql);
             preparedStatement.setString(1, t.getFecha());
+            preparedStatement.setString(2, t.getNombre());
+            
+            System.out.println(t.getFecha());
 
             if (preparedStatement.executeUpdate() >= 1) {
                 JOptionPane.showMessageDialog(null, "Evento agregado correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
@@ -41,13 +44,14 @@ public class EventoCRUD implements DAOEvento {
 
     @Override
     public void actualizar(Evento t) {
-        String sql = "UPDATE evento SET Fecha = ? WHERE id = ?";
+        String sql = "UPDATE evento SET Fecha = TO_DATE(?, 'YYYY-MM-DD'), Nombre = ? WHERE id = ?";
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = conexionDB.getInstancia().getConexion().prepareStatement(sql);
             preparedStatement.setString(1, t.getFecha());
-            preparedStatement.setInt(2, t.getId());
+            preparedStatement.setString(2, t.getNombre());
+            preparedStatement.setInt(3, t.getId());
 
             if (preparedStatement.executeUpdate() >= 1) {
                 JOptionPane.showMessageDialog(null, "Evento actualizado correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
@@ -94,13 +98,15 @@ public class EventoCRUD implements DAOEvento {
         }
     }
 
-    private Evento convertir(ResultSet rs, int id) throws SQLException {
-        String fecha = rs.getString("Fecha");
-        return new Evento(id, fecha);
+    public Evento convertir(ResultSet rs, int id) throws SQLException {
+        String fecha = rs.getString("fecha");
+        String nombre = rs.getString("nombre");
+
+        return new Evento(id, nombre, fecha);
     }
 
     @Override
-    public Evento buscar(Integer id) throws SQLException {
+    public Evento buscar(Integer id) {
         String sql = "SELECT * FROM evento WHERE id = ?";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -135,7 +141,7 @@ public class EventoCRUD implements DAOEvento {
     }
 
     @Override
-    public List<Evento> buscarTodos() throws SQLException {
+    public List<Evento> buscarTodos(){
         String sql = "SELECT * FROM evento";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;

@@ -4,8 +4,15 @@
  */
 package com.tecjerez.proyecto_universidad.interfaz.form;
 
+import com.tecjerez.proyecto_universidad.bd.hilos;
+import com.tecjerez.proyecto_universidad.bd.modelo.Clase;
+import com.tecjerez.proyecto_universidad.bd.modelo.Evento;
 import java.awt.Component;
 import java.awt.Container;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -16,10 +23,11 @@ import javax.swing.table.TableModel;
  */
 public class Form_EventosClases extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Form_EventosClases
-     */
-    
+    Evento evento;
+    Clase clase;
+    hilos h;
+    ArrayList<Evento> eventos;
+    ArrayList<Clase> clases;
     DefaultTableModel tableModel = new DefaultTableModel();
     DefaultTableModel tableModel1 = new DefaultTableModel();
     
@@ -29,12 +37,15 @@ public class Form_EventosClases extends javax.swing.JPanel {
         initComponents();
         
         tableModel.addColumn("ID");
-        tableModel.addColumn("Nombre");
+        tableModel.addColumn("Nombre evento");
         tableModel.addColumn("Fecha");
         
         tableModel1.addColumn("ID");
         tableModel1.addColumn("Año");
+        tableModel1.addColumn("Nivel");
+        tableModel1.addColumn("Carrera");
         
+        txt7.setDateFormatString("yyyy");
         
         tabla.setModel(tableModel);
         tabla1.setModel(tableModel1);
@@ -72,8 +83,8 @@ public class Form_EventosClases extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         txt2 = new javax.swing.JTextField();
-        txt3 = new javax.swing.JTextField();
         txt1 = new javax.swing.JSpinner();
+        txt5 = new com.toedter.calendar.JDateChooser();
         roundPanel8 = new com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
@@ -86,8 +97,12 @@ public class Form_EventosClases extends javax.swing.JPanel {
         btnBuscar1 = new com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        txt4 = new javax.swing.JTextField();
         txt6 = new javax.swing.JSpinner();
+        jLabel6 = new javax.swing.JLabel();
+        metodo = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        metodo1 = new javax.swing.JComboBox<>();
+        txt7 = new com.toedter.calendar.JDateChooser();
         roundPanel9 = new com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         tabla1 = new javax.swing.JTable();
@@ -161,13 +176,6 @@ public class Form_EventosClases extends javax.swing.JPanel {
 
         txt2.setToolTipText("");
 
-        txt3.setToolTipText("");
-        txt3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt3ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout roundPanel1Layout = new javax.swing.GroupLayout(roundPanel1);
         roundPanel1.setLayout(roundPanel1Layout);
         roundPanel1Layout.setHorizontalGroup(
@@ -196,9 +204,9 @@ public class Form_EventosClases extends javax.swing.JPanel {
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txt3)
                             .addComponent(txt2)
-                            .addComponent(txt1, javax.swing.GroupLayout.Alignment.LEADING))))
+                            .addComponent(txt1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         roundPanel1Layout.setVerticalGroup(
@@ -213,9 +221,9 @@ public class Form_EventosClases extends javax.swing.JPanel {
                     .addComponent(jLabel2)
                     .addComponent(txt2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(txt3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -249,10 +257,10 @@ public class Form_EventosClases extends javax.swing.JPanel {
         );
         roundPanel8Layout.setVerticalGroup(
             roundPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, roundPanel8Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+            .addGroup(roundPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         roundPanel2.setBackground(new java.awt.Color(0, 204, 204));
@@ -316,7 +324,27 @@ public class Form_EventosClases extends javax.swing.JPanel {
             }
         });
 
-        txt4.setToolTipText("");
+        jLabel6.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        jLabel6.setText("Nivel");
+        jLabel6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
+
+        metodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ISC", "IM", "LAE" }));
+        metodo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                metodoActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        jLabel7.setText("Carrera");
+        jLabel7.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 255), 1, true));
+
+        metodo1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Licenciatura", "Maestria", "Doctorado" }));
+        metodo1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                metodo1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout roundPanel2Layout = new javax.swing.GroupLayout(roundPanel2);
         roundPanel2.setLayout(roundPanel2Layout);
@@ -341,12 +369,16 @@ public class Form_EventosClases extends javax.swing.JPanel {
                             .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(roundPanel2Layout.createSequentialGroup()
                         .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txt4)
-                            .addComponent(txt6, javax.swing.GroupLayout.Alignment.LEADING))))
+                            .addComponent(txt6, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(metodo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(metodo1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txt7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         roundPanel2Layout.setVerticalGroup(
@@ -357,10 +389,18 @@ public class Form_EventosClases extends javax.swing.JPanel {
                     .addComponent(jLabel4)
                     .addComponent(txt6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addComponent(txt4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                    .addComponent(txt7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(metodo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(metodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(btnActualizar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -388,15 +428,15 @@ public class Form_EventosClases extends javax.swing.JPanel {
             roundPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(roundPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane6)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
                 .addContainerGap())
         );
         roundPanel9Layout.setVerticalGroup(
             roundPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, roundPanel9Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
+            .addGroup(roundPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jLabel8.setFont(new java.awt.Font("Segoe UI Black", 0, 36)); // NOI18N
@@ -413,41 +453,47 @@ public class Form_EventosClases extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(roundPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(roundPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(roundPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(roundPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(roundPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(365, 365, 365))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(roundPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(roundPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(roundPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(roundPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(roundPanel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(77, 77, 77)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(roundPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(roundPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(roundPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(roundPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(roundPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(roundPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-
+        if (Integer.parseInt(txt1.getValue().toString()) <= 0) {
+            JOptionPane.showMessageDialog(null, "No hay evento por eliminar", "", JOptionPane.WARNING_MESSAGE);
+        } else {
+            h = new hilos("eliminarEvento");
+            h.setId(Integer.parseInt(txt1.getValue().toString()));
+            h.start();
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregarMouseClicked
@@ -455,15 +501,79 @@ public class Form_EventosClases extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAgregarMouseClicked
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        Date fechaSeleccionada = txt5.getDate();
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaSeleccionadaS = formatoFecha.format(fechaSeleccionada);
+        
+        if (txt2.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Componente(s) vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else {
+            try {
+                evento = new Evento(
+                        txt2.getText(),
+                        fechaSeleccionadaS
+                );
+                
 
+                h = new hilos("insertarEvento");
+                h.setObjeto(evento);
+                h.start();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Ingrese datos correctos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        Date fechaSeleccionada = txt5.getDate();
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaSeleccionadaS = formatoFecha.format(fechaSeleccionada);
+        
+        if (txt2.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Componente(s) vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else if (Integer.parseInt(txt1.getValue().toString()) > 0) {
+            try {
 
+                evento = new Evento(
+                        Integer.parseInt(txt1.getValue().toString()),
+                        txt2.getText(),
+                        fechaSeleccionadaS
+                );
+                
+
+                h = new hilos("cambiarEvento");
+                h.setObjeto(evento);
+                h.start();
+            } catch (NumberFormatException | NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "Ingrese datos correctos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay registro por cambiar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        tableModel.setRowCount(0);
 
+        if (Integer.parseInt(txt1.getValue().toString()) > 0) {
+
+            h = new hilos("consultarEvento");
+            h.setId(Integer.parseInt(txt1.getValue().toString()));
+            h.start();
+            try {
+                h.join();
+                evento = (Evento) h.getObjeto();
+            } catch (InterruptedException b) {
+                b.printStackTrace();
+            }
+
+            if (evento != null) {
+                tableModel.addRow(new Object[]{evento.getId(),evento.getNombre(),evento.getFecha()});
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay evento", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -473,15 +583,33 @@ public class Form_EventosClases extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        tableModel.setRowCount(0);
 
+        h = new hilos("consultarTEvento");
+        h.start();
+        try {
+            h.join();
+            eventos = (ArrayList<Evento>) h.getObjeto();
+        } catch (InterruptedException b) {
+            b.printStackTrace();
+        }
+        if(!eventos.isEmpty()){
+            for (Evento a : eventos) {
+            tableModel.addRow(new Object[]{a.getId(),a.getNombre(),a.getFecha()});
+        }
+        }else{
+            JOptionPane.showMessageDialog(null, "No hay eventos registrados", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void txt3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt3ActionPerformed
-
     private void btnEliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar1ActionPerformed
-        // TODO add your handling code here:
+        if (Integer.parseInt(txt6.getValue().toString()) <= 0) {
+            JOptionPane.showMessageDialog(null, "No hay clase por eliminar", "", JOptionPane.WARNING_MESSAGE);
+        } else {
+            h = new hilos("eliminarClase");
+            h.setId(Integer.parseInt(txt6.getValue().toString()));
+            h.start();
+        }
     }//GEN-LAST:event_btnEliminar1ActionPerformed
 
     private void btnAgregar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregar1MouseClicked
@@ -489,24 +617,109 @@ public class Form_EventosClases extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAgregar1MouseClicked
 
     private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
-        // TODO add your handling code here:
+        Date fechaSeleccionada = txt7.getDate();
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy");
+        String fechaSeleccionadaS = formatoFecha.format(fechaSeleccionada);    
+        
+        try {
+                clase = new Clase(
+                        fechaSeleccionadaS,
+                        metodo1.getSelectedItem().toString(),
+                        metodo.getSelectedItem().toString()
+                );
+                
+
+                h = new hilos("insertarClase");
+                h.setObjeto(clase);
+                h.start();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Ingrese datos correctos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }     
     }//GEN-LAST:event_btnAgregar1ActionPerformed
 
     private void btnActualizar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizar1ActionPerformed
-        // TODO add your handling code here:
+        Date fechaSeleccionada = txt7.getDate();
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy");
+        String fechaSeleccionadaS = formatoFecha.format(fechaSeleccionada);
+        
+         if (Integer.parseInt(txt6.getValue().toString()) > 0) {
+            try {
+
+                clase = new Clase(
+                        Integer.parseInt(txt6.getValue().toString()),
+                        fechaSeleccionadaS,
+                        metodo1.getSelectedItem().toString(),
+                        metodo.getSelectedItem().toString()
+                );
+                
+
+                h = new hilos("cambiarClase");
+                h.setObjeto(clase);
+                h.start();
+            } catch (NumberFormatException | NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "Ingrese datos correctos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay registro por cambiar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnActualizar1ActionPerformed
 
     private void btnBuscar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscar1ActionPerformed
-        // TODO add your handling code here:
+        tableModel1.setRowCount(0);
+
+        if (Integer.parseInt(txt6.getValue().toString()) > 0) {
+
+            h = new hilos("consultarClase");
+            h.setId(Integer.parseInt(txt6.getValue().toString()));
+            h.start();
+            try {
+                h.join();
+                clase = (Clase) h.getObjeto();
+            } catch (InterruptedException b) {
+                b.printStackTrace();
+            }
+
+            if (clase != null) {
+                tableModel1.addRow(new Object[]{clase.getId(),clase.getAnio_clase(),clase.getNivel(),clase.getCarrera()});
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay clase", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnBuscar1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        limpiarCampos(this);
+
+        tableModel1.setRowCount(0);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        tableModel1.setRowCount(0);
+
+        h = new hilos("consultarTClase");
+        h.start();
+        try {
+            h.join();
+            clases = (ArrayList<Clase>) h.getObjeto();
+        } catch (InterruptedException b) {
+            b.printStackTrace();
+        }
+        if(!clases.isEmpty()){
+            for (Clase a : clases) {
+            tableModel1.addRow(new Object[]{a.getId(),a.getAnio_clase(),a.getNivel(),a.getCarrera()});
+        }
+        }else{
+            JOptionPane.showMessageDialog(null, "No hay eventos registrados", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void metodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_metodoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_metodoActionPerformed
+
+    private void metodo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_metodo1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_metodo1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -527,10 +740,14 @@ public class Form_EventosClases extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JComboBox<String> metodo;
+    private javax.swing.JComboBox<String> metodo1;
     private com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel roundPanel1;
     private com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel roundPanel2;
     private com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel roundPanel8;
@@ -539,8 +756,8 @@ public class Form_EventosClases extends javax.swing.JPanel {
     private javax.swing.JTable tabla1;
     private javax.swing.JSpinner txt1;
     private javax.swing.JTextField txt2;
-    private javax.swing.JTextField txt3;
-    private javax.swing.JTextField txt4;
+    private com.toedter.calendar.JDateChooser txt5;
     private javax.swing.JSpinner txt6;
+    private com.toedter.calendar.JDateChooser txt7;
     // End of variables declaration//GEN-END:variables
 }

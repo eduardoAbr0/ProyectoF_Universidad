@@ -12,6 +12,12 @@ public class Clase {
         this.nivel = nivel;
         this.carrera = carrera;
     }
+    
+     public Clase( String anio_clase, String nivel, String carrera) {
+        this.anio_clase = anio_clase;
+        this.nivel = nivel;
+        this.carrera = carrera;
+    }
 
     public int getId() {
         return id;

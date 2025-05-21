@@ -44,7 +44,7 @@ public class Menu extends javax.swing.JPanel {
         addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-garantia.png")), "Garantias", 4);
         addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-pago.png")), "Pagos/Circulos", 5);
         addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/eventoDonativo.png")), "DonadorEvento", 6);
-        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-reporte.png")), "Reportes", 7);
+        addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-reporte.png")), "Reportes/Graficas", 7);
         addEmpty();
         addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-cerrarsesion.png")), "Cerrar sesión", 8);
         

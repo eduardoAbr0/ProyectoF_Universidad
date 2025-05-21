@@ -7,6 +7,7 @@ package com.tecjerez.proyecto_universidad.interfaz;
 import com.tecjerez.proyecto_universidad.interfaz.event.EventMenu;
 import com.tecjerez.proyecto_universidad.interfaz.login;
 import com.tecjerez.proyecto_universidad.interfaz.form.Form;
+import com.tecjerez.proyecto_universidad.interfaz.form.FormReportesGraficas;
 import com.tecjerez.proyecto_universidad.interfaz.form.Form_DonacionEventos;
 import com.tecjerez.proyecto_universidad.interfaz.form.Form_Donadores;
 import com.tecjerez.proyecto_universidad.interfaz.form.Form_EventosClases;
@@ -47,7 +48,7 @@ public class main extends javax.swing.JFrame {
                 }else if (index == 6){
                     showForm(new Form_DonacionEventos());
                 }else if (index == 7){
-                    System.out.println("FORM REPORTES");
+                    showForm(new FormReportesGraficas());
                 }
                 else if (index == 8) {
                     lg = new login();

@@ -13,6 +13,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -23,7 +24,11 @@ import javax.swing.table.DefaultTableModel;
  * @author ed308
  */
 public class Form_Donadores extends javax.swing.JPanel {
-
+    
+    PreparedStatement pr = null;
+    ResultSet rs = null;
+    conexionDB db;
+    
     Donador donador;
     hilos h;
     ArrayList<Donador> donadores;
@@ -48,6 +53,8 @@ public class Form_Donadores extends javax.swing.JPanel {
         tableModel.addColumn("Clase");
         
         tabla.setModel(tableModel);
+        
+        invocarCombos();
     }
     
     private void limpiarCampos(Container container) {
@@ -60,7 +67,32 @@ public class Form_Donadores extends javax.swing.JPanel {
             }
         }
     }
-
+    
+    private void comboBForaneo(String tabla, JComboBox<String> combo) {
+        String sql = "SELECT ID FROM "+tabla;
+        
+        combo.removeAllItems();
+        
+        try {
+            pr = db.getInstancia().getConexion().prepareStatement(sql);
+            rs = pr.executeQuery();
+            
+            while(rs.next()){
+                combo.addItem(rs.getString(1));
+            }
+            
+            combo.setEnabled(combo.getItemCount() > 0);
+        } catch (SQLException e) {
+            System.out.println(e);
+        }   
+    }
+    
+    private void invocarCombos(){
+        comboBForaneo("representante", comboRepresentante);
+        comboBForaneo("voluntario", comboVoluntario);
+        comboBForaneo("clase", comboClase);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -100,9 +132,9 @@ public class Form_Donadores extends javax.swing.JPanel {
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        txt15 = new javax.swing.JSpinner();
-        txt16 = new javax.swing.JSpinner();
-        txt17 = new javax.swing.JSpinner();
+        comboRepresentante = new javax.swing.JComboBox<>();
+        comboClase = new javax.swing.JComboBox<>();
+        comboVoluntario = new javax.swing.JComboBox<>();
         roundPanel3 = new com.tecjerez.proyecto_universidad.interfaz.swim.RoundPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
@@ -304,9 +336,9 @@ public class Form_Donadores extends javax.swing.JPanel {
                             .addComponent(txt7)
                             .addComponent(txt9)
                             .addComponent(txt1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txt15)
-                            .addComponent(txt16)
-                            .addComponent(txt17, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(comboRepresentante, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboClase, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboVoluntario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         roundPanel1Layout.setVerticalGroup(
@@ -355,16 +387,16 @@ public class Form_Donadores extends javax.swing.JPanel {
                     .addComponent(txt8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
+                    .addComponent(jLabel11)
+                    .addComponent(comboClase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12))
+                    .addComponent(jLabel12)
+                    .addComponent(comboRepresentante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(txt17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboVoluntario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
                 .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -426,6 +458,8 @@ public class Form_Donadores extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        invocarCombos();
+        
         if (Integer.parseInt(txt1.getValue().toString()) <= 0) {
             JOptionPane.showMessageDialog(null, "No hay donador por eliminar", "", JOptionPane.WARNING_MESSAGE);
         } else {
@@ -434,13 +468,15 @@ public class Form_Donadores extends javax.swing.JPanel {
             h.start();
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
-
+    
     private void btnAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregarMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAgregarMouseClicked
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-       if (txt2.getText().isEmpty() || txt3.getText().isEmpty() || txt4.getText().isEmpty() || txt10.getText().isEmpty() || txt8.getText().isEmpty() || txt5.getText().isEmpty()) {
+        invocarCombos();
+        
+        if (txt2.getText().isEmpty() || txt3.getText().isEmpty() || txt4.getText().isEmpty() || txt10.getText().isEmpty() || txt8.getText().isEmpty() || txt5.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Componente(s) vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         } else {
             try {
@@ -456,9 +492,9 @@ public class Form_Donadores extends javax.swing.JPanel {
                         txt8.getText()
                 );
                 
-                donador.setRepresentante(Integer.parseInt(txt16.getValue().toString()));
-                donador.setClase(Integer.parseInt(txt15.getValue().toString()));
-                donador.setVoluntario(Integer.parseInt(txt17.getValue().toString()));
+                donador.setRepresentante(Integer.parseInt(comboRepresentante.getSelectedItem().toString()));
+                donador.setClase(Integer.parseInt(comboClase.getSelectedItem().toString()));
+                donador.setVoluntario(Integer.parseInt(comboVoluntario.getSelectedItem().toString()));
 
                 h = new hilos("insertarDonador");
                 h.setObjeto(donador);
@@ -471,7 +507,9 @@ public class Form_Donadores extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-            if (txt2.getText().isEmpty() || txt3.getText().isEmpty() || txt4.getText().isEmpty() || txt10.getText().isEmpty() || txt8.getText().isEmpty() || txt5.getText().isEmpty()) {
+        invocarCombos();    
+        
+        if (txt2.getText().isEmpty() || txt3.getText().isEmpty() || txt4.getText().isEmpty() || txt10.getText().isEmpty() || txt8.getText().isEmpty() || txt5.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Componente(s) vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         } else if (Integer.parseInt(txt1.getValue().toString()) > 0) {
             try {
@@ -489,9 +527,9 @@ public class Form_Donadores extends javax.swing.JPanel {
                         txt8.getText()
                 );
                 
-                donador.setRepresentante(Integer.parseInt(txt15.getValue().toString()));
-                donador.setVoluntario(Integer.parseInt(txt16.getValue().toString()));
-                donador.setVoluntario(Integer.parseInt(txt17.getValue().toString()));
+                donador.setRepresentante(Integer.parseInt(comboRepresentante.getSelectedItem().toString()));
+                donador.setVoluntario(Integer.parseInt(comboVoluntario.getSelectedItem().toString()));
+                donador.setClase(Integer.parseInt(comboClase.getSelectedItem().toString()));
 
                 h = new hilos("cambiarDonador");
                 h.setObjeto(donador);
@@ -505,6 +543,7 @@ public class Form_Donadores extends javax.swing.JPanel {
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        invocarCombos();
         tableModel.setRowCount(0);
 
         if (Integer.parseInt(txt1.getValue().toString()) > 0) {
@@ -535,6 +574,7 @@ public class Form_Donadores extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        invocarCombos();
         tableModel.setRowCount(0);
 
         h = new hilos("consultarTDonador");
@@ -604,11 +644,11 @@ public class Form_Donadores extends javax.swing.JPanel {
         //CP
         txt9.setValue(tableModel.getValueAt(i, 8));
         //Representante
-        txt15.setValue(tableModel.getValueAt(i, 10));
+        comboRepresentante.setSelectedItem(tableModel.getValueAt(i, 10).toString());
         //Voluntario
-        txt16.setValue(tableModel.getValueAt(i, 11));
+        comboVoluntario.setSelectedItem(tableModel.getValueAt(i, 11).toString());
         //Clase
-        txt17.setValue(tableModel.getValueAt(i, 12));
+        comboClase.setSelectedItem(tableModel.getValueAt(i, 12).toString());
         
         
     }//GEN-LAST:event_tablaMouseClicked
@@ -670,6 +710,9 @@ public class Form_Donadores extends javax.swing.JPanel {
     private com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges btnAgregar;
     private com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges btnBuscar;
     private com.tecjerez.proyecto_universidad.interfaz.swim.ButtonBadges btnEliminar;
+    private javax.swing.JComboBox<String> comboClase;
+    private javax.swing.JComboBox<String> comboRepresentante;
+    private javax.swing.JComboBox<String> comboVoluntario;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -692,9 +735,6 @@ public class Form_Donadores extends javax.swing.JPanel {
     private javax.swing.JSpinner txt1;
     private javax.swing.JTextField txt10;
     private javax.swing.JComboBox<String> txt11;
-    private javax.swing.JSpinner txt15;
-    private javax.swing.JSpinner txt16;
-    private javax.swing.JSpinner txt17;
     private javax.swing.JTextField txt2;
     private javax.swing.JTextField txt3;
     private javax.swing.JTextField txt4;

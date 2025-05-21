@@ -29,6 +29,7 @@ public class PanelLoginRegister extends javax.swing.JLayeredPane {
     private DBlogin dbLog = new DBlogin();
     private main ventanaP;
     private JFrame parentFrame;
+    private MyTextField txtUser,txtUserLog;
     
     public PanelLoginRegister(JFrame parentFrame) {
         this.parentFrame = parentFrame;
@@ -38,14 +39,14 @@ public class PanelLoginRegister extends javax.swing.JLayeredPane {
         login.setVisible(false);
         register.setVisible(true);
     }
-
+    
     private void initRegister() {
         register.setLayout(new MigLayout("wrap", "push[center]push", "push[]25[]10[]push"));
         JLabel label = new JLabel("Crear cuenta");
         label.setFont(new Font("sansserif", 1, 30));
         label.setForeground(new Color(153, 204, 255));
         register.add(label);
-        MyTextField txtUser = new MyTextField();
+        txtUser = new MyTextField();
         txtUser.setPrefixIcon(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/user.png")));
         txtUser.setHint("Nombre de usuario");
         register.add(txtUser, "w 60%");
@@ -77,10 +78,10 @@ public class PanelLoginRegister extends javax.swing.JLayeredPane {
         label.setFont(new Font("sansserif", 1, 30));
         label.setForeground(new Color(153, 204, 255));
         login.add(label);
-        MyTextField txtUser = new MyTextField();
-        txtUser.setPrefixIcon(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/user.png")));
-        txtUser.setHint("Nombre de usuario");
-        login.add(txtUser, "w 60%");
+        txtUserLog = new MyTextField();
+        txtUserLog.setPrefixIcon(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/user.png")));
+        txtUserLog.setHint("Nombre de usuario");
+        login.add(txtUserLog, "w 60%");
         MyTextField txtPassw = new MyTextField();
         txtPassw.setPrefixIcon(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/pass.png")));
         txtPassw.setHint("Contraseña");
@@ -94,10 +95,10 @@ public class PanelLoginRegister extends javax.swing.JLayeredPane {
         cmd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (txtUser.getText().isEmpty() || txtPassw.getText().isEmpty()) {
+                if (txtUserLog.getText().isEmpty() || txtPassw.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Llena los campos");
                 } else {
-                    if (dbLog.encontrarUsuario(String.valueOf(txtUser.getText()), String.valueOf(txtPassw.getText()))) {
+                    if (dbLog.encontrarUsuario(String.valueOf(txtUserLog.getText()), String.valueOf(txtPassw.getText()))) {
                         ventanaP = new main();
                         ventanaP.setVisible(true);
                         cerrarPrincipal();
@@ -122,7 +123,7 @@ public class PanelLoginRegister extends javax.swing.JLayeredPane {
             parentFrame.dispose();
         }
     }
-
+   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

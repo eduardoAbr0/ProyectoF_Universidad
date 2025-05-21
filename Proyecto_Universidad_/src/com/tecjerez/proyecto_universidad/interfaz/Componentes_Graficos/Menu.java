@@ -36,7 +36,6 @@ public class Menu extends javax.swing.JPanel {
     public void initMenu(EventMenu event) {
         this.event = event;
         
-        
         addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-donadores.png")), "Donadores", 0);
         addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-representante.png")), "Representantes", 1);
         addMenu(new ImageIcon(getClass().getResource("/com/tecjerez/proyecto_universidad/interfaz/iconos/icon-voluntario.png")), "Voluntarios", 2);
